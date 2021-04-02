@@ -9,19 +9,17 @@ height = splash.winfo_screenheight()
 splash.state("zoomed")
 splash.overrideredirect(True)
 splashscreen = splashScreenFrames(splash)
-image = splashscreen.img
+#image = splashscreen.img
 splash.after(3000, lambda: splash.destroy())
+splash.mainloop()
 
 
 root = Tk()
 root.title("FOOTBALL LEAGUE")
 root.state("zoomed")
-loginscreen = loginScreenFrame(root, image)
+loginscreen = loginScreenFrame(root)
+root.mainloop()
 
-
-
-
-mainloop()
 
 #screen = LoginScreen(root)
 

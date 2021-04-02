@@ -18,5 +18,6 @@ class splashScreenFrames:
         panel.pack()
         self.splash.pack()
 
+
     def forgetframe(self):
         self.splash.pack_forget()
