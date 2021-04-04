@@ -50,10 +50,10 @@ class PlayerStatsScreen:
         self.gender = Label(self.playerStat_frame, text="male", font=font, borderwidth=3, relief="ridge").grid(row=2,
                                                                                                                column=2,
                                                                                                                sticky=EW)
-        date_string = datetime.date(year=2002, day=20, month=1)
-        self.dob = Label(self.playerStat_frame, text=date_string, font=font, borderwidth=3, relief="ridge").grid(row=3,
-                                                                                                                 column=2,
-                                                                                                                 sticky=EW)
+        dob_string = datetime.date(year=2002, day=20, month=1)
+        self.dob = Label(self.playerStat_frame, text=dob_string, font=font, borderwidth=3, relief="ridge").grid(row=3,
+                                                                                                                column=2,
+                                                                                                                sticky=EW)
         self.nation = Label(self.playerStat_frame, text="Indian", font=font, borderwidth=3,
                             relief="ridge").grid(row=4, column=2, sticky=EW)
         self.sal = Label(self.playerStat_frame, text="10,000K", font=font, borderwidth=3, relief="ridge").grid(row=5,
