@@ -16,7 +16,7 @@ class sponsorlistFrame:
 
         self.my_canvas.create_text(85, 20, text="SPONSORER NAME", font="Times")
         self.my_canvas.create_line(170, 0, 170, 2000, fill="coral4")
-        self.my_canvas.create_text(230, 20, text="CEO", font="Times")
+        self.my_canvas.create_text(230, 20, text="LOGO", font="Times")
         self.my_canvas.create_line(290, 0, 290, 2000, fill="coral4")
-        self.my_canvas.create_text(405, 20, text="HOME STADIUM", font="Times")
+        self.my_canvas.create_text(405, 20, text="BRAND AMBASSADOR", font="Times")
         self.my_canvas.create_line(0, 40, 500, 40, fill="coral4")
