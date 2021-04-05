@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from ProfileScreen import ProfileScreen
 from PlayerList import playerlistFrame
 from ManagerList import managerlistFrame
+from TeamList import teamlistFrame
 
 class HomeScreenFrameGen:
 
@@ -142,7 +143,7 @@ class HomeScreenFrameGen:
 
     def teamsredirect(self):
         self.main_frame.forget()
-        pass
+        teamlistFrame(self.master)
 
     def playersredirect(self):
         self.main_frame.forget()
