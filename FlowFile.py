@@ -1,30 +1,30 @@
 from tkinter import *
 from SplashScreen import splashScreenFrames
 from LoginScreen import loginScreenFrame
-import time
 
-splash = Tk()
-width = splash.winfo_screenwidth()
-height = splash.winfo_screenheight()
-splash.state("zoomed")
-splash.overrideredirect(True)
-splashscreen = splashScreenFrames(splash)
-splash.after(2000, lambda: splash.destroy())
-splash.mainloop()
-
+def startup():
+    global root
+    global rootscreen
+    root.overrideredirect(False)
+    root.title("FOOTBALL LEAGUE")
+    root.state("zoomed")
+    rootscreen.forgetframe()
+    loginScreenFrame(root)
+    root.resizable(0, 0)
 
 
 root = Tk()
-root.title("FOOTBALL LEAGUE")
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
 root.state("zoomed")
-loginscreen = loginScreenFrame(root)
-root.resizable(0, 0)
+root.overrideredirect(True)
+rootscreen = splashScreenFrames(root)
+root.after(3000, lambda: startup())
 root.mainloop()
 
-
-#screen = LoginScreen(root)
-
-#logo = ImageTk.PhotoImage(raw_logo)
-#canvas = Canvas(splash, width = 200, height = 300)
-#canvas.create_image(0, 0, anchor=NW, image=logo)
-#canvas.pack(pady=300)
+# root = Tk()
+# root.title("FOOTBALL LEAGUE")
+# root.state("zoomed")
+# loginscreen = loginScreenFrame(root)
+# root.resizable(0, 0)
+# root.mainloop()

@@ -1,11 +1,14 @@
 from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
-
+from ProfileScreen import ProfileScreen
+from PlayerList import playerlistFrame
+from ManagerList import managerlistFrame
 
 class HomeScreenFrameGen:
 
     def __init__(self, master):
+        self.master = master
         self.main_frame = Frame(master) #donot use this frame for inserting any widget. You should use another variable called usable_frame
         # self.main_frame.columnconfigure(0, pad=50)
         # self.main_frame.columnconfigure(1, pad=50)
@@ -33,7 +36,8 @@ class HomeScreenFrameGen:
                    image=self.profileimg,
                    text="Profile",
                    compound=TOP,
-                   style="Prof.TButton").place(anchor=NE, x=self.usable_frame.winfo_screenwidth()-50, y=15)
+                   style="Prof.TButton",
+                   command=self.profileredirect).place(anchor=NE, x=self.usable_frame.winfo_screenwidth()-50, y=15)
 
         # Fixtures
         self.fixture_main_frame = Frame(self.usable_frame)
@@ -128,6 +132,22 @@ class HomeScreenFrameGen:
             else:
                 self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                           tags=("oddrow"))
-        Button(self.match_tree_frame, text="Teams", borderwidth=0, background="#0AFFEF").grid(row=2, column=0, sticky=NSEW, padx=5, pady=5)
-        Button(self.match_tree_frame, text="Players", borderwidth=0, height=6, background="#0AFFEF").grid(row=2, column=1, padx=5, pady=5, sticky=NSEW)
-        Button(self.match_tree_frame, text="Manager", borderwidth=0, background="#0AFFEF").grid(row=2, column=2, sticky=NSEW, padx=5, pady=5)
+        Button(self.match_tree_frame, text="Teams", borderwidth=0, background="#0AFFEF", command=self.teamsredirect).grid(row=2, column=0, sticky=NSEW, padx=5, pady=5)
+        Button(self.match_tree_frame, text="Players", borderwidth=0, height=6, background="#0AFFEF", command=self.playersredirect).grid(row=2, column=1, padx=5, pady=5, sticky=NSEW)
+        Button(self.match_tree_frame, text="Manager", borderwidth=0, background="#0AFFEF", command=self.managerredirect).grid(row=2, column=2, sticky=NSEW, padx=5, pady=5)
+
+    def profileredirect(self):
+        self.main_frame.forget()
+        ProfileScreen(self.master)
+
+    def teamsredirect(self):
+        self.main_frame.forget()
+        pass
+
+    def playersredirect(self):
+        self.main_frame.forget()
+        playerlistFrame(self.master)
+
+    def managerredirect(self):
+        self.main_frame.forget()
+        managerlistFrame(self.master)

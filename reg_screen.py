@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 from tkcalendar import DateEntry
 import re
+from HomePage import HomeScreenFrameGen
 
 class Reg_screen:
      def __init__(self, master):
@@ -39,36 +40,38 @@ class Reg_screen:
                  return False
 
          def validateAllfields():
-             if v_username.get() == "":
+             if self.v_username.get() == "":
                  messagebox.showinfo('Information', 'Enter UserName to proceed')
-             elif v_pwd.get() == "":
+             elif self.v_pwd.get() == "":
                  messagebox.showinfo('Information', 'Enter pwd to proceed')
-             elif v_name.get() == "":
+             elif self.v_name.get() == "":
                  messagebox.showinfo('Information', 'Enter Name to proceed')
-             elif v_mobile.get() == "":
+             elif self.v_mobile.get() == "":
                  messagebox.showinfo('Information', 'Enter Mobile Number to proceed')
-             elif v_mailId.get() == "":
+             elif self.v_mailId.get() == "":
                  messagebox.showinfo('Information', 'Enter Mail ID to proceed')
-             elif v_gender.get() == 0:
+             elif self.v_gender.get() == 0:
                  messagebox.showinfo('Information', 'Select Gender to proceed')
-             elif v_country.get() == "" or v_country.get() == "Select your Country":
+             elif self.v_country.get() == "" or self.v_country.get() == "Select your Country":
                  messagebox.showinfo('Information', 'Select Country to proceed')
-             elif v_pwd.get() != v_confirmpwd.get():
+             elif self.v_pwd.get() != self.v_confirmpwd.get():
                  messagebox.showinfo('Error', 'Password Mismatch')
-             elif v_mailId.get() != "":
-                 status = isvalidemail(v_mailId.get())
+             elif self.v_mailId.get() != "":
+                 status = isvalidemail(self.v_mailId.get())
                  if (status):
                      messagebox.showinfo('', 'Registration Successful')
+                     self.reg_screen.forget()
+                     HomeScreenFrameGen(master)
                  else:
-                     messagebox.showinfo('', 'Registration Successful')
+                     messagebox.showinfo('', 'Registration Unsuccessful')
 
          def clearallfields():
-             v_username.set("")
-             v_pwd.set("")
-             v_confirmpwd.set("")
-             v_name.set("")
-             v_mobile.set("")
-             v_mailId.set("")
+             self.v_username.set("")
+             self.v_pwd.set("")
+             self.v_confirmpwd.set("")
+             self.v_name.set("")
+             self.v_mobile.set("")
+             self.v_mailId.set("")
 
          self.lbl_heading = Label(self.reg_screen, text="Registration Screen", font=("Verdana", 16, "bold"), bg="#1BD7BB").place(
              x=180, y=40)
@@ -101,7 +104,7 @@ class Reg_screen:
          self.ent_mobile.place(x=200, y=240)
          # mobile num verification
          self.valid_phone = self.reg_screen.register(valid_phonenum)
-         self.ent_mobile.config(validate="key", validatecommand=(valid_phone, '%P'))
+         self.ent_mobile.config(validate="key", validatecommand=(self.valid_phone, '%P'))
 
          self.lbl_mail = Label(self.reg_screen, text="Mail ID", font=("Goudy old style", 10, "bold"), bg="#1BD7BB").place(x=75,
                                                                                                                 y=270)
@@ -110,16 +113,16 @@ class Reg_screen:
 
          self.lbl_gender = Label(self.reg_screen, text="Gender", font=("Goudy old style", 10, "bold"), bg="#1BD7BB").place(x=75,
                                                                                                                  y=300)
-         self.Radiobutton(self.reg_screen, text="Male", bg="#1BD7BB", font=("times new roman", 10, "bold"), padx=5,
+         Radiobutton(self.reg_screen, text="Male", bg="#1BD7BB", font=("times new roman", 10, "bold"), padx=5,
                      variable=self.v_gender, value=1).place(x=200, y=300)
-         self.Radiobutton(self.reg_screen, text="Female", bg="#1BD7BB", font=("times new roman", 10, "bold"), padx=5,
+         Radiobutton(self.reg_screen, text="Female", bg="#1BD7BB", font=("times new roman", 10, "bold"), padx=5,
                      variable=self.v_gender, value=2).place(x=260, y=300)
 
          self.lbl_country = Label(self.reg_screen, text="Country", font=("Goudy old style", 10, "bold"), bg="#1BD7BB").place(x=75,
                                                                                                                    y=330)
          self.list_country = {'India', 'Germany', 'Spain', 'Nepal', 'Canada'}
          # if we remove * list will be displayed horizantally
-         self.droplist = OptionMenu(self.reg_screen, self.v_country, *list_country)
+         self.droplist = OptionMenu(self.reg_screen, self.v_country, *self.list_country)
          self.droplist.config(height=1, width=16)
          self.v_country.set('Select your Country')
          self.droplist.place(x=200, y=330)
