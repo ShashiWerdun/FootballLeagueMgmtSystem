@@ -18,6 +18,7 @@ root = Tk()
 root.title("FOOTBALL LEAGUE")
 root.state("zoomed")
 loginscreen = loginScreenFrame(root)
+root.resizable(0, 0)
 root.mainloop()
 
 
