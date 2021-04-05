@@ -9,9 +9,9 @@ height = splash.winfo_screenheight()
 splash.state("zoomed")
 splash.overrideredirect(True)
 splashscreen = splashScreenFrames(splash)
-#image = splashscreen.img
-splash.after(3000, lambda: splash.destroy())
+splash.after(2000, lambda: splash.destroy())
 splash.mainloop()
+
 
 
 root = Tk()

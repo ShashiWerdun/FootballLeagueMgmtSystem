@@ -13,7 +13,6 @@ class loginScreenFrame:
         img_raw = img_raw.filter(ImageFilter.GaussianBlur(3))
         self.photo = ImageTk.PhotoImage(img_raw)
         self.pic = Label(self.login_frame, image=self.photo)
-        #self.image.place(x=0, y=0, relwidth=1, relheight=1)
         self.pic.pack()
         self.frame_login = Frame(self.login_frame, bg="White", relief=RAISED, borderwidth=0)
         self.frame_login.place(x=525, y=300, width=550, height=315)
@@ -32,7 +31,6 @@ class loginScreenFrame:
         Button(self.frame_login, text="New Fan?|Signup Here!", font=("Goudy old style", 9),bg="White").place(x=50, y=230)
         Label(self.frame_login, text="Contact us at:***********", font=("times new roman", 8),bg="White").place(x=375, y=275)
         self.login_frame.place(x=0, y=0, relwidth=1, relheight=1)
-        #self.image.place(x=0,y=0,relwidth=1,relheight=1)
 
     def loginfunc(self):
         self.login_frame.place_forget()
