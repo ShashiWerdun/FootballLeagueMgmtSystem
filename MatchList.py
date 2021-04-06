@@ -1,24 +1,66 @@
 from tkinter import *
+from tkinter import ttk
 
 
 class matchlistFrame:
-    def __init__(self, master):
-        self.frame = Frame(master)
-        self.frame.pack(pady=90)
-        self.my_canvas = Canvas(self.frame, bg="cornsilk3", width=550, height=500, scrollregion=(0, 0, 2000, 2000))
-        self.vbar = Scrollbar(self.frame)
-        self.vbar.pack(side=RIGHT, fill=Y)
-        self.vbar.config(command=self.my_canvas.yview)
-        self.my_canvas.config(width=550, height=500)
-        self.my_canvas.config(yscrollcommand=self.vbar.set)
-        self.my_canvas.pack()
+
+      def __init__(self, master):
+          self.tree_frame = Frame(master)
+          self.tree_frame.pack(pady=150)
+          self.tree_scroll = Scrollbar(self.tree_frame)
+          self.tree_scroll.pack(side=RIGHT, fill=Y)
+          self.my_tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll.set)
+          self.tree_scroll.config(command=self.my_tree.yview)
+          self.usable_frame = Frame(self.tree_frame)
+
+          self.style = ttk.Style()
+          self.style.theme_use("clam")
+          self.style.configure("Treeview", background="cornsilk3", foreground="black", rowheight=27, fieldbackground="cornsilk3")
+          self.style.map('Treeview',background=[('selected','coral4')])
+
+          self.my_tree.pack()
+
+          self.my_tree['columns'] = ("Team1", "Team2", "Score1-Score2", "Time-Date")
+          self.my_tree.column("#0", width=0, stretch=NO)
+          self.my_tree.column("Team1", width=200)
+          self.my_tree.column("Team2", width=200)
+          self.my_tree.column("Score1-Score2", width=200)
+          self.my_tree.column("Time-Date", width=170)
+
+          self.my_tree.heading("#0", text="")
+          self.my_tree.heading("Team1", text="Team1")
+          self.my_tree.heading("Team2", text="Team2")
+          self.my_tree.heading("Score1-Score2", text="Score1-Score2")
+          self.my_tree.heading("Time-Date", text="Time-Date")
+
+          self.data = [
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67],
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67],
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67],
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67],
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67],
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67],
+              [1, 2, 34, 5],
+              [2, 4, 5, 67],
+              [3, 45, 56, 67]
+
+                 ]
+
+          self.count=0
+          for record in self.data:
+                self.my_tree.insert(parent='', index='end', iid=self.count, text="", values=(record[0], record[1], record[2], record[3]))
+                self.count += 1
 
 
-        self.my_canvas.create_text(50, 20, text="TEAM1", font="Times")
-        self.my_canvas.create_line(100, 0, 100, 2000, fill="coral4")
-        self.my_canvas.create_text(145, 20, text="TEAM2", font="Times")
-        self.my_canvas.create_line(195, 0, 195, 2000, fill="coral4")
-        self.my_canvas.create_text(270, 20, text="TIME-DATE", font="Times")
-        self.my_canvas.create_line(350, 0, 350, 2000, fill="coral4")
-        self.my_canvas.create_text(450, 20, text="SCORE1-SCORE2", font="Times")
-        self.my_canvas.create_line(0, 40, 550, 40, fill="coral4")
