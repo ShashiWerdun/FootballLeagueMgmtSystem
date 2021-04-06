@@ -19,5 +19,5 @@ class splashScreenFrames:
         self.splash.pack()
 
 
-    def forgetframe(self):
-        self.splash.pack_forget()
+    def destroy_frame(self):
+        self.splash.destroy()

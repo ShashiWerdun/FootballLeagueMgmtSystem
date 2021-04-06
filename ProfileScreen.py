@@ -1,23 +1,24 @@
 from tkinter import *
-from PIL import ImageTk, Image, ImageFilter
+from PIL import ImageTk, Image
 import tkinter.font as tkFont
-from tkcalendar import Calendar, DateEntry
 import datetime
+from ScreenTemplate import template
 
-
-class ProfileScreen:
+class ProfileScreen(template):
     def __init__(self, master):
+        self.master = master
         self.profile_frame = Frame(master)
+
+        super().__init__(self.profile_frame)
         # required
         screen_width = master.winfo_screenwidth()
         screen_height = master.winfo_screenheight()
 
         # display profile picture
-        dp_raw = Image.open('Images\SplashScreen.jpeg')
-        dp_raw = dp_raw.resize((screen_width // 4, screen_height // 4), Image.ANTIALIAS)
-        self.dp = ImageTk.PhotoImage(dp_raw)
-        pic = Label(self.profile_frame, image=self.dp)
-        pic.grid(row=0, columnspan=2)
+        self.dp_raw = Image.open('Images\SplashScreen.jpeg')
+        self.dp_raw = self.dp_raw.resize((screen_width // 4, screen_height // 4), Image.ANTIALIAS)
+        self.dp = ImageTk.PhotoImage(self.dp_raw)
+        Label(self.profile_frame, image=self.dp).grid(row=0, columnspan=2)
 
         # display user's details
         font = tkFont.Font(family="Goudy old style", size=18)
@@ -47,6 +48,10 @@ class ProfileScreen:
         self.mail = Label(self.profile_frame, text="shashivardhan201@gmail.com", font=font, borderwidth=3,
                           relief="ridge").grid(row=5, column=1, sticky=EW)
 
+    def start_frame(self):
+        # required
+        screen_width = self.master.winfo_screenwidth()
+        screen_height = self.master.winfo_screenheight()
         # display the final frame
         pos_x = 3 * screen_width // 8 - 75
         pos_y = screen_height // 4
