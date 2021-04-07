@@ -1,9 +1,12 @@
 from tkinter import *
 
+from ScreenTemplate import template
 
-class sponsorlistFrame:
+
+class sponsorlistFrame(template):
     def __init__(self, master):
-        self.frame = Frame(master)
+        super().__init__(master)
+        self.frame = Frame(self.baseFrame)
         self.frame.pack(pady=90)
         self.my_canvas = Canvas(self.frame, bg="cornsilk3", width=500, height=500, scrollregion=(0, 0, 2000, 2000))
         self.vbar = Scrollbar(self.frame)

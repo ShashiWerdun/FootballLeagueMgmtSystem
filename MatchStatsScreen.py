@@ -4,18 +4,19 @@ from tkinter import *
 
 from PIL import Image, ImageTk
 
+from ScreenTemplate import template
 
-class MatchStatsScreen:
+
+class MatchStatsScreen(template):
     def __init__(self, master):
-        self.MatchStatFrame = Frame(master)
+        super().__init__(master)
+        self.MatchStatFrame = Frame(self.baseFrame)
         # required
-        screen_width = master.winfo_screenwidth()
-        screen_height = master.winfo_screenheight()
         font = tkFont.Font(family="Goudy old style", size=18)
 
         # display stadium picture
         stadium_pic_raw = Image.open('Images\SplashScreen.jpeg')
-        stadium_pic_raw = stadium_pic_raw.resize((screen_width // 4, screen_height // 4), Image.ANTIALIAS)
+        stadium_pic_raw = stadium_pic_raw.resize((self.screenwidth // 4, self.screenheight // 4), Image.ANTIALIAS)
         self.stadium_pic = ImageTk.PhotoImage(stadium_pic_raw)
         Label(self.MatchStatFrame, image=self.stadium_pic).grid(rowspan=4, columnspan=2, column=2)
 
@@ -57,7 +58,5 @@ class MatchStatsScreen:
         self.performance_frame = Frame(self.MatchStatFrame).grid(row=5, columnspan=4, sticky=EW)
         Label(self.MatchStatFrame, text=performance_string, font=("Goudy old style", 26, "bold"), borderwidth=4,
               relief="ridge").grid(
-            row=5, columnspan=4, sticky=EW)
-
-    def start_frame(self):
+            row=0, columnspan=4, sticky=EW)
         self.MatchStatFrame.place(x=250, y=200)

@@ -1,27 +1,27 @@
 from tkinter import *
 from tkinter import ttk
-from PIL import Image, ImageTk, ImageFilter
+
+from PIL import Image, ImageTk
+
 from ScreenTemplate import template
-from ProfileScreen import ProfileScreen
-from PlayerList import playerlistFrame
-from ManagerList import managerlistFrame
-from TeamList import teamlistFrame
+
 
 class HomeScreenFrameGen(template):
 
     def __init__(self, master):
-        self.master = master
-        self.main_frame = Frame(master) #donot use this frame for inserting any widget. You should use another variable called usable_frame
-        super().__init__(self.main_frame)
+        super().__init__(master)
+        # donot use this frame for inserting any widget. You should use another variable called usable_frame
+        self.main_frame = Frame(self.baseFrame)
         self.main_canvas = Canvas(self.main_frame)
         self.main_canvas.pack(side=LEFT, fill=BOTH, expand=1)
         self.main_scroll_bar = ttk.Scrollbar(self.main_frame, orient=VERTICAL, command=self.main_canvas.yview)
         self.main_scroll_bar.pack(side=RIGHT, fill=Y)
         self.main_canvas.configure(yscrollcommand=self.main_scroll_bar.set)
-        self.main_canvas.bind('<Configure>', lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all")))
+        self.main_canvas.bind('<Configure>',
+                              lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all")))
         self.usable_frame = Frame(self.main_canvas)
-        self.main_canvas.create_window((0, 0), window=self.usable_frame, anchor=NW, width=master.winfo_screenwidth(),
-                                       height=master.winfo_screenheight())
+        self.main_canvas.create_window((0, 0), window=self.usable_frame, anchor=NW, width=self.screenwidth,
+                                       height=self.screenheight)
         Label(self.usable_frame,
               text="Upcoming Matches",
               font=("Constantia", 16, "bold")).place(x=7, y=100)
@@ -30,24 +30,26 @@ class HomeScreenFrameGen(template):
         self.ButtonStyleForProf.configure("Prof.TButton", background="Black", foreground="Black",
                                           font=("Lucida Console", 12, "bold"))
         self.profilebutton = ttk.Button(self.usable_frame,
-                   image=self.profileimg,
-                   text="Profile",
-                   compound=TOP,
-                   style="Prof.TButton")
-        self.profilebutton.place(anchor=NE, x=self.usable_frame.winfo_screenwidth()-50, y=15)
+                                        image=self.profileimg,
+                                        text="Profile",
+                                        compound=TOP,
+                                        style="Prof.TButton")
+        self.profilebutton.place(anchor=NE, x=self.usable_frame.winfo_screenwidth() - 50, y=15)
 
         # Fixtures
         self.fixture_main_frame = Frame(self.usable_frame)
         self.fixture_main_frame.place(x=7, y=130, relwidth=0.97, relheight=0.2)
         self.fixture_canvas = Canvas(self.fixture_main_frame)
         self.fixture_canvas.place(x=0, y=0, relwidth=1)
-        self.fixture_scroll_bar = ttk.Scrollbar(self.fixture_main_frame, orient=HORIZONTAL, command=self.fixture_canvas.xview)
+        self.fixture_scroll_bar = ttk.Scrollbar(self.fixture_main_frame, orient=HORIZONTAL,
+                                                command=self.fixture_canvas.xview)
         self.fixture_scroll_bar.place(anchor=SW, x=0, y=150, relwidth=1)
         self.fixture_canvas.configure(xscrollcommand=self.fixture_scroll_bar.set)
-        self.fixture_canvas.bind('<Configure>', lambda e: self.fixture_canvas.configure(scrollregion=self.fixture_canvas.bbox("all")))
+        self.fixture_canvas.bind('<Configure>',
+                                 lambda e: self.fixture_canvas.configure(scrollregion=self.fixture_canvas.bbox("all")))
         self.fixture_Frame = Frame(self.fixture_canvas)
         self.fixture_canvas.create_window((0, 0), window=self.fixture_Frame, anchor="nw")
-        for option in [("Manchester United FC", "Liverpool","03-04-2021","7:30PM IST"),
+        for option in [("Manchester United FC", "Liverpool", "03-04-2021", "7:30PM IST"),
                        ("Chelsa FC", "Arsenel", "04-04-2021", "7:00 PST"),
                        ("Manchester City FC", "Tottenham", "05-04-2021", "6:00 PST"),
                        ("Leicester City", "Leeds United", "06-04-2021", "5:00 WST"),
@@ -82,12 +84,12 @@ class HomeScreenFrameGen(template):
               font=("Constantia", 16, "bold")).place(x=7, y=350)
 
         self.treestyle = ttk.Style()
-        #self.treestyle.theme_use("default")
+        # self.treestyle.theme_use("default")
         self.treestyle.configure("Treeview", background="White", foreground="White", rowheight=30,
-                         font = ("Malgun Gothic", 10),
-                        fieldbackground="White")
+                                 font=("Malgun Gothic", 10),
+                                 fieldbackground="White")
         self.treestyle.map('Treeview', background=[('selected', "#0AFFEF")])
-        self.matchschedule = ttk.Treeview(self.match_tree_frame, yscrollcommand=self.tree_scroll_bar.set,)
+        self.matchschedule = ttk.Treeview(self.match_tree_frame, yscrollcommand=self.tree_scroll_bar.set, )
         self.matchschedule.grid(row=1, column=0, columnspan=3)
 
         self.tree_scroll_bar.config(command=self.matchschedule.yview)
@@ -104,50 +106,37 @@ class HomeScreenFrameGen(template):
         self.matchschedule.heading("Timeandday", text="When", anchor=CENTER)
         self.matchschedule.heading("Stadium", text="Location", anchor=CENTER)
 
-        schedulelist=[("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                       ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                       ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                       ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
-                      ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                      ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                      ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                      ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
-                      ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                      ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                      ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                      ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
-                      ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                      ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                      ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                      ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4")]
+        schedulelist = [("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
+                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
+                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
+                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
+                        ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
+                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
+                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
+                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
+                        ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
+                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
+                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
+                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
+                        ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
+                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
+                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
+                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4")]
 
         self.matchschedule.tag_configure("oddrow", background="White")
         self.matchschedule.tag_configure("evenrow", background="gold2")
         for record in enumerate(schedulelist):
-            if record[0] %2 == 0:
-                self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1], tags=("evenrow"))
+            if record[0] % 2 == 0:
+                self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                          tags=("evenrow"))
             else:
                 self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                           tags=("oddrow"))
-        Button(self.match_tree_frame, text="Teams", borderwidth=0, background="#0AFFEF").grid(row=2, column=0, sticky=NSEW, padx=5, pady=5)
-        Button(self.match_tree_frame, text="Players", borderwidth=0, height=6, background="#0AFFEF").grid(row=2, column=1, padx=5, pady=5, sticky=NSEW)
-        Button(self.match_tree_frame, text="Manager", borderwidth=0, background="#0AFFEF").grid(row=2, column=2, sticky=NSEW, padx=5, pady=5)
-
-    def start_frame(self):
+        self.teams_list_button = Button(self.match_tree_frame, text="Teams", borderwidth=0, background="#0AFFEF")
+        self.teams_list_button.grid(row=2, column=0, sticky=NSEW, padx=5, pady=5)
+        self.players_list_button = Button(self.match_tree_frame, text="Players", borderwidth=0, height=6,
+                                          background="#0AFFEF")
+        self.players_list_button.grid(row=2, column=1, padx=5, pady=5, sticky=NSEW)
+        self.managers_list_button = Button(self.match_tree_frame, text="Manager", borderwidth=0, background="#0AFFEF")
+        self.managers_list_button.grid(row=2, column=2, sticky=NSEW, padx=5, pady=5)
         self.main_frame.pack(fill=BOTH, expand=1, ipadx=10, ipady=10)
-
-    # def profileredirect(self):
-    #     self.main_frame.destroy()
-    #     ProfileScreen(self.master)
-    #
-    # def teamsredirect(self):
-    #     self.main_frame.destroy()
-    #     teamlistFrame(self.master)
-    #
-    # def playersredirect(self):
-    #     self.main_frame.destroy()
-    #     playerlistFrame(self.master)
-    #
-    # def managerredirect(self):
-    #     self.main_frame.forget()
-    #     managerlistFrame(self.master)

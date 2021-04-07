@@ -1,29 +1,31 @@
+import re
 from tkinter import *
 from tkinter import messagebox
+
 from PIL import ImageTk, ImageFilter, Image
 from tkcalendar import DateEntry
-import re
+
 from ScreenTemplate import template
 
 
 class Reg_screen(template):
     def __init__(self, master):
-        self.mainf = Frame(master)
+        super().__init__(master)
+        self.mainframe = Frame(self.baseFrame)
 
         self.img_raw = Image.open('Images\SplashScreen.jpeg')
         self.raw_logo = Image.open('Images\DBMS_LOGO.png')
         self.raw_logo = self.raw_logo.resize((300, 300), Image.ANTIALIAS)
-        self.img_raw = self.img_raw.resize((master.winfo_screenwidth(), master.winfo_screenheight()), Image.ANTIALIAS)
+        self.img_raw = self.img_raw.resize((self.screenwidth, self.screenheight), Image.ANTIALIAS)
         self.img_raw = self.img_raw.filter(ImageFilter.GaussianBlur(3))
-        self.img_raw.paste(self.raw_logo, ((master.winfo_screenwidth() // 3) + 120, 300), self.raw_logo)
+        self.img_raw.paste(self.raw_logo, ((self.screenwidth // 3) + 120, 300), self.raw_logo)
         self.img = ImageTk.PhotoImage(self.img_raw)
-        self.panel = Label(self.mainf, image=self.img)
+        self.panel = Label(self.mainframe, image=self.img)
         self.panel.pack()
 
-        self.reg_screen = Frame(self.mainf)
+        self.reg_screen = Frame(self.mainframe)
         self.reg_screen.configure(background="#1BD7BB")
         self.reg_screen.place(x=475, y=150, width=600, height=500)
-        super().__init__(self.mainf)
 
         self.v_name = StringVar()
         self.v_mobile = StringVar()
@@ -167,6 +169,4 @@ class Reg_screen(template):
         self.btn_clear = Button(self.reg_screen, text="CLEAR", bg="#990F02", fg="white", font=("Helvetica", 10, "bold"),
                                 command=clearallfields)
         self.btn_clear.place(x=60, y=420)
-
-    def start_frame(self):
-        self.mainf.place(x=0, y=0, relwidth=1, relheight=1)
+        self.mainframe.place(x=0, y=0, relwidth=1, relheight=1)

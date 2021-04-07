@@ -1,9 +1,14 @@
 from tkinter import *
+
 from PIL import ImageTk, Image, ImageFilter
 
-class splashScreenFrames:
+from ScreenTemplate import template
+
+
+class splashScreenFrames(template):
     def __init__(self, master):
-        self.splash = Frame(master)
+        super().__init__(master)
+        self.splash = Frame(self.baseFrame)
 
         # creating background image
         img_raw = Image.open('Images\SplashScreen.jpeg')
@@ -17,7 +22,3 @@ class splashScreenFrames:
         panel = Label(self.splash, image=self.img)
         panel.pack()
         self.splash.pack()
-
-
-    def destroy_frame(self):
-        self.splash.destroy()

@@ -1,21 +1,25 @@
 from tkinter import *
 from tkinter import ttk
 
+from ScreenTemplate import template
 
-class pointsTableFrame:
 
-      def __init__(self, master):
-          self.tree_frame = Frame(master)
-          self.tree_frame.pack(pady=150)
-          self.tree_scroll = Scrollbar(self.tree_frame)
-          self.tree_scroll.pack(side=RIGHT, fill=Y)
-          self.my_tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll.set)
-          self.tree_scroll.config(command=self.my_tree.yview)
-          self.usable_frame = Frame(self.tree_frame)
+class pointsTableFrame(template):
 
-          self.style = ttk.Style()
-          self.style.theme_use("clam")
-          self.style.configure("Treeview", background="cornsilk3", foreground="black", rowheight=25, fieldbackground="cornsilk3")
+    def __init__(self, master):
+        super().__init__(master)
+        self.tree_frame = Frame(self.baseFrame)
+        self.tree_frame.pack(pady=150)
+        self.tree_scroll = Scrollbar(self.tree_frame)
+        self.tree_scroll.pack(side=RIGHT, fill=Y)
+        self.my_tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll.set)
+        self.tree_scroll.config(command=self.my_tree.yview)
+        self.usable_frame = Frame(self.tree_frame)
+
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
+        self.style.configure("Treeview", background="cornsilk3", foreground="black", rowheight=25,
+                             fieldbackground="cornsilk3")
           self.style.map('Treeview',background=[('selected','coral4')])
 
           self.my_tree.pack()

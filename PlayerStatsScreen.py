@@ -1,19 +1,20 @@
-from tkinter import *
-from PIL import ImageTk, Image
-import tkinter.font as tkFont
 import datetime
+import tkinter.font as tkFont
+from tkinter import *
+
+from PIL import ImageTk, Image
+
+from ScreenTemplate import template
 
 
-class PlayerStatsScreen:
+class PlayerStatsScreen(template):
     def __init__(self, master):
-        self.playerStat_frame = Frame(master)
-        # required
-        screen_width = master.winfo_screenwidth()
-        screen_height = master.winfo_screenheight()
+        super().__init__(master)
+        self.playerStat_frame = Frame(self.baseFrame)
 
         # display player picture
         dp_raw = Image.open('Images\SplashScreen.jpeg')
-        dp_raw = dp_raw.resize((screen_width // 4, screen_height // 4), Image.ANTIALIAS)
+        dp_raw = dp_raw.resize((self.screenwidth // 4, self.screenheight // 4), Image.ANTIALIAS)
         self.dp = ImageTk.PhotoImage(dp_raw)
         pic = Label(self.playerStat_frame, image=self.dp)
         pic.grid(column=0, rowspan=4)
@@ -71,7 +72,7 @@ class PlayerStatsScreen:
                                                                                                            sticky=EW)
 
         # display the final frame
-        pos_x = 3 * screen_width // 8 - 200
-        pos_y = screen_height // 4
+        pos_x = 3 * self.screenwidth // 8 - 200
+        pos_y = self.screenheight // 4
         # self.profile_frame.grid(sticky="")
         self.playerStat_frame.place(x=pos_x, y=pos_y)
