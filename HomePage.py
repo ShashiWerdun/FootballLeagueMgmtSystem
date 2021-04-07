@@ -34,7 +34,10 @@ class HomeScreenFrameGen(template):
                                         text="Profile",
                                         compound=TOP,
                                         style="Prof.TButton")
-        self.profilebutton.place(anchor=NE, x=self.usable_frame.winfo_screenwidth() - 50, y=15)
+        self.profilebutton.place(anchor=NE, x=self.usable_frame.winfo_screenwidth() - 40, y=15)
+        self.logoutimg = ImageTk.PhotoImage(Image.open("Images\\logout.png").resize((40, 40), Image.ANTIALIAS))
+        self.logoutbutton = ttk.Button(self.usable_frame, text="Logout", image=self.logoutimg, compound=LEFT, style="Prof.TButton")
+        self.logoutbutton.place(x=10, y=15)
 
         # Fixtures
         self.fixture_main_frame = Frame(self.usable_frame)

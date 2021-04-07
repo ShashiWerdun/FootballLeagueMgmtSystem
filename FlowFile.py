@@ -24,6 +24,7 @@ def change_screens(startscreen, endscreen):
         endscreen = screen_stack.pop()
     else:
         screen_stack.append(startscreen)
+        endscreen.back_button.config(command=lambda: change_screens(present_screen, None))
     endscreen.start_frame()
     present_screen = endscreen
 
@@ -69,11 +70,13 @@ login_screen.loginbutton.config(command=lambda: change_screens(login_screen, hom
 login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
 login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
 
+registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
+
 home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
 home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
 home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
 home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
+home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
 
-Button(root, text="BACK", font=("Verdana", 16, "bold"), borderwidth=4, relief="ridge",
-       command=lambda: change_screens(present_screen, None)).pack()
+
 root.mainloop()

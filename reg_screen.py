@@ -164,7 +164,10 @@ class Reg_screen(template):
         self.btn_register = Button(self.reg_screen, text="REGISTER", bg="#990F02", fg="white",
                                    font=("Helvetica", 12, "bold"),
                                    command=validateAllfields)
-        self.btn_register.place(x=300, y=420)
+        self.btn_register.place(x=450, y=420)
+        self.loginredirect = Button(self.reg_screen, text="Already a user?Click here to login", bg="#1BD7BB", fg="white",
+                                    font=("Helvetica", 11, "bold"), borderwidth=0)
+        self.loginredirect.place(x=175, y=450)
 
         self.btn_clear = Button(self.reg_screen, text="CLEAR", bg="#990F02", fg="white", font=("Helvetica", 10, "bold"),
                                 command=clearallfields)

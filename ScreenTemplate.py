@@ -1,5 +1,7 @@
 from tkinter import *
 
+from PIL import ImageTk, Image
+
 
 class template:
 
@@ -8,12 +10,12 @@ class template:
         self.baseFrame = Frame(master)
         self.screenwidth = master.winfo_screenwidth()
         self.screenheight = master.winfo_screenheight()
+        self.backimage = ImageTk.PhotoImage(Image.open("Images\\arrow.png").resize((40, 40), Image.ANTIALIAS))
+        self.back_button = Button(self.baseFrame, image=self.backimage, font=("Verdana", 16, "bold"), borderwidth=1)
 
-        '''self.back_button = Button(self.baseFrame, text="BACK", font=("Verdana", 16, "bold"), borderwidth=3,
-                                  relief="ridge")
-        self.back_button.place(x=0, y=0)'''
 
     def start_frame(self):
+        self.back_button.place(x=10, y=10)
         self.baseFrame.place(x=0, y=0, relwidth=1, relheight=1)
 
     def destroy_frame(self):
