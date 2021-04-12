@@ -1,5 +1,6 @@
 from tkinter import *
 
+from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
 from ManagerList import managerlistFrame
@@ -30,6 +31,23 @@ def change_screens(startscreen, endscreen):
 
 
 def startup():
+    # screen change buttons
+    login_screen.loginbutton.config(command=lambda: change_screens(login_screen, home_screen))
+    login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
+    login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
+
+    registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
+
+    home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
+    home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
+    home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
+    home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
+    home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
+    home_screen.points_table_button.config(command=lambda: change_screens(home_screen, points_table_screen))
+    home_screen.sponsors_list_button.config(command=lambda: change_screens(home_screen, sponsor_list_screen))
+
+    profile_screen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
+
     global root
     root.overrideredirect(False)
     root.title("FOOTBALL LEAGUE")
@@ -39,6 +57,7 @@ def startup():
 
 
 root = Tk()
+# TODO: add iconbitmap for root window
 
 screen_stack = []
 present_screen = None
@@ -60,23 +79,9 @@ match_list_screen = matchlistFrame(root)
 sponsor_list_screen = sponsorlistFrame(root)
 team_list_screen = teamlistFrame(root)
 team_stat_screen = TeamStatsScreen(root)
+favourites_screen = favouritesScreenframe(root)
 
 root.state("zoomed")
 root.overrideredirect(True)
 root.after(3000, lambda: startup())
-
-# screen change buttons
-login_screen.loginbutton.config(command=lambda: change_screens(login_screen, home_screen))
-login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
-login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
-
-registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
-
-home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
-home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
-home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
-home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
-home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
-
-
 root.mainloop()
