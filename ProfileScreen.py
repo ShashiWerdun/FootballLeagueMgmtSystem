@@ -22,10 +22,13 @@ class ProfileScreen(template):
         self.profile_frame = Frame(self.baseFrame)
 
         # Favourites button
+        self.style = ttk.Style()
+        self.style.theme_use("clam")
+        self.style.configure("profile.TButton", font=("Malgun Gothic", 12, "bold"))
         self.favourites_image = ImageTk.PhotoImage(Image.open("Images/lover.png"))
         self.favourites_button = ttk.Button(self.baseFrame, image=self.favourites_image, compound=TOP,
-                                            text="Favourites")
-        self.favourites_button.place(x=1000, y=200)
+                                            text="Favourites", style="profile.TButton")
+        self.favourites_button.place(x=950, y=150)
 
         # create fields
         self.profile_frame.columnconfigure(0, minsize=200)

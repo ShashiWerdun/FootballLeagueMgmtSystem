@@ -88,7 +88,7 @@ class HomeScreenFrameGen(template):
             Button(self.fixture_Frame,
                    text=f"{option[0]}\nVs\n{option[1]}\nOn {option[2]} {option[3]}",
                    font=("Comic Sans MS", 14),
-                   bg="tomato",
+                   bg="tan1",
                    width=25,
                    pady=4,
                    borderwidth=0).pack(side=LEFT, padx=5)
@@ -99,17 +99,19 @@ class HomeScreenFrameGen(template):
         self.match_tree_frame.place(x=125, y=400, relwidth=0.825)
         self.tree_scroll_bar = ttk.Scrollbar(self.match_tree_frame)
         self.tree_scroll_bar.grid(row=1, column=4, sticky=NS)
-        Label(self.main_frame,
+        Label(self.usable_frame,
               text="All Matches",
               font=("Constantia", 16, "bold"), borderwidth=0, width=10).place(x=125, y=373)
 
         self.treestyle = ttk.Style()
-        # self.treestyle.theme_use("default")
-        self.treestyle.configure("Treeview", background="White", foreground="White", rowheight=50,
+        self.treestyle.theme_use("clam")
+        self.treestyle.configure("homescreen.Treeview", background="White", foreground="White", rowheight=35,
                                  font=("Malgun Gothic", 10),
                                  fieldbackground="White")
-        self.treestyle.map('Treeview', background=[('selected', "#0AFFEF")])
-        self.matchschedule = ttk.Treeview(self.match_tree_frame, yscrollcommand=self.tree_scroll_bar.set, )
+        self.treestyle.map('homescreen.Treeview', background=[('selected', 'coral4')])
+        self.treestyle.configure("homescreen.Treeview.Heading", font=("Malgun Gothic", 14, "bold"))
+        self.matchschedule = ttk.Treeview(self.match_tree_frame, yscrollcommand=self.tree_scroll_bar.set,
+                                          style="homescreen.Treeview")
         self.matchschedule.grid(row=1, column=0, columnspan=4)
 
         self.tree_scroll_bar.config(command=self.matchschedule.yview)
@@ -157,17 +159,22 @@ class HomeScreenFrameGen(template):
         for _ in range(4):
             self.match_tree_frame.columnconfigure(_, minsize=300)
 
-        self.teams_list_button = Button(self.match_tree_frame, text="Teams", font=font, borderwidth=0,
-                                        background="tomato")
+        bottom_button_font = tkFont.Font(family="Courier New Greek", size=16, weight="bold")
+
+        self.teams_list_button = Button(self.match_tree_frame, text="Teams", font=bottom_button_font, borderwidth=3,
+                                        background="tan1", relief="raised")
         self.teams_list_button.grid(row=2, column=0, padx=5, pady=5, sticky=EW)
-        self.players_list_button = Button(self.match_tree_frame, text="All Players", font=font, borderwidth=0,
-                                          background="tomato")
+        self.players_list_button = Button(self.match_tree_frame, text="All Players", font=bottom_button_font,
+                                          borderwidth=3, relief="raised",
+                                          background="tan1")
         self.players_list_button.grid(row=2, column=1, padx=5, pady=5, sticky=EW)
-        self.managers_list_button = Button(self.match_tree_frame, text="Club Managers", font=font, borderwidth=0,
-                                           background="tomato")
+        self.managers_list_button = Button(self.match_tree_frame, text="Club Managers", font=bottom_button_font,
+                                           borderwidth=3, relief="raised",
+                                           background="tan1")
         self.managers_list_button.grid(row=2, column=2, padx=5, pady=5, sticky=EW)
-        self.sponsors_list_button = Button(self.match_tree_frame, text="League Sponsors", font=font, borderwidth=0,
-                                           background="tomato")
+        self.sponsors_list_button = Button(self.match_tree_frame, text="League Sponsors", font=bottom_button_font,
+                                           borderwidth=3, relief="raised",
+                                           background="tan1")
         self.sponsors_list_button.grid(row=2, column=3, padx=5, pady=5, sticky=EW)
 
         self.main_frame.pack(fill=BOTH, expand=1, ipadx=10, ipady=10)

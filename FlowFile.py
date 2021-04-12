@@ -1,5 +1,7 @@
 from tkinter import *
 
+from PIL import Image, ImageTk
+
 from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
@@ -49,16 +51,18 @@ def startup():
     profile_screen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
 
     global root
+    global image
     root.overrideredirect(False)
-    root.title("FOOTBALL LEAGUE")
+    root.title("FOOTBALLLAZA")
+    root.iconphoto(False, image)
     root.state("zoomed")
     root.resizable(0, 0)
     change_screens(splash_screen, login_screen)
 
 
 root = Tk()
-# TODO: add iconbitmap for root window
 
+image = ImageTk.PhotoImage(Image.open("Images/DBMS_LOGO.png"))
 screen_stack = []
 present_screen = None
 
