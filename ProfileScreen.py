@@ -10,16 +10,10 @@ from ScreenTemplate import template
 
 class ProfileScreen(template):
     def __init__(self, master):
+        super().__init__(master)
+        self.profile_frame = Frame(self.baseFrame)
         # general font for this page
         font = tkFont.Font(family="Goudy old style", size=18)
-
-        # BG image
-        self.bgimage = ImageTk.PhotoImage(
-            Image.open("Images/bgnew.jpg").resize((master.winfo_screenwidth(), master.winfo_screenheight()),
-                                                  Image.ANTIALIAS))
-
-        super().__init__(master, self.bgimage)
-        self.profile_frame = Frame(self.baseFrame)
 
         # Favourites button
         self.style = ttk.Style()

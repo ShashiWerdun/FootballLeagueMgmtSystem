@@ -1,18 +1,13 @@
 from tkinter import *
 from tkinter import ttk
 
-from PIL import ImageTk, Image
-
 from ScreenTemplate import template
 
 
 class pointsTableFrame(template):
 
     def __init__(self, master):
-        self.bgimage = ImageTk.PhotoImage(
-            Image.open("Images/bgnew.jpg").resize((master.winfo_screenwidth(), master.winfo_screenheight()),
-                                                  Image.ANTIALIAS))
-        super().__init__(master, self.bgimage)
+        super().__init__(master)
         self.tree_frame = Frame(self.baseFrame)
         self.tree_frame.pack(pady=150)
         self.tree_scroll = Scrollbar(self.tree_frame)
