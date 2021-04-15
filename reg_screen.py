@@ -1,4 +1,3 @@
-import re
 from tkinter import *
 from tkinter import messagebox
 
@@ -24,7 +23,7 @@ class Reg_screen(template):
         self.panel.pack()
 
         self.reg_screen = Frame(self.mainframe)
-        self.reg_screen.configure(background="#1BD7BB")
+        self.reg_screen.configure(background="lemon chiffon")
         self.reg_screen.place(x=475, y=150, width=600, height=500)
 
         self.v_name = StringVar()
@@ -89,40 +88,41 @@ class Reg_screen(template):
             self.v_mailId.set("")
 
         self.lbl_heading = Label(self.reg_screen, text="Registration Screen", font=("Verdana", 16, "bold"),
-                                 bg="#1BD7BB").place(
+                                 bg="lemon chiffon").place(
             x=180, y=40)
         self.lbl_usrid = Label(self.reg_screen, text="User ID", font=("Goudy old style", 10, "bold"),
-                               bg="#1BD7BB").place(x=75,
-                                                   y=90)
+                               bg="lemon chiffon").place(x=75,
+                                                         y=90)
         self.ent_usrid = Label(self.reg_screen, text="***", font=("times new roman", 10, "bold")).place(x=200, y=90)
 
         self.lbl_usrname = Label(self.reg_screen, text="UserName", font=("Goudy old style", 10, "bold"),
-                                 bg="#1BD7BB").place(
+                                 bg="lemon chiffon").place(
             x=75, y=120)
         self.ent_usrname = Entry(self.reg_screen, textvariable=self.v_username,
                                  font=("times new roman", 10, "bold")).place(x=200,
                                                                              y=120)
 
         self.lbl_pwd = Label(self.reg_screen, text="Password", font=("Goudy old style", 10, "bold"),
-                             bg="#1BD7BB").place(x=75,
-                                                 y=150)
+                             bg="lemon chiffon").place(x=75,
+                                                       y=150)
         self.ent_pwd = Entry(self.reg_screen, textvariable=self.v_pwd, show="*",
                              font=("times new roman", 10, "bold")).place(x=200,
                                                                          y=150)
 
         self.bl_confrmpwd = Label(self.reg_screen, text="Confirm Password", font=("Goudy old style", 10, "bold"),
-                                  bg="#1BD7BB").place(x=50, y=180)
+                                  bg="lemon chiffon").place(x=50, y=180)
         self.ent_confrmpwd = Entry(self.reg_screen, textvariable=self.v_confirmpwd, show="*",
                                    font=("times new roman", 10, "bold")).place(x=200, y=180)
 
-        self.lbl_Name = Label(self.reg_screen, text="Name", font=("Goudy old style", 10, "bold"), bg="#1BD7BB").place(
+        self.lbl_Name = Label(self.reg_screen, text="Name", font=("Goudy old style", 10, "bold"),
+                              bg="lemon chiffon").place(
             x=75,
             y=210)
         self.ent_name = Entry(self.reg_screen, textvariable=self.v_name, font=("times new roman", 10, "bold")).place(
             x=200, y=210)
 
         self.lbl_mobile = Label(self.reg_screen, text="Mobile Number", font=("Goudy old style", 10, "bold"),
-                                bg="#1BD7BB").place(
+                                bg="lemon chiffon").place(
             x=60, y=240)
         self.ent_mobile = Entry(self.reg_screen, textvariable=self.v_mobile, font=("times new roman", 10, "bold"))
         self.ent_mobile.place(x=200, y=240)
@@ -131,22 +131,22 @@ class Reg_screen(template):
         self.ent_mobile.config(validate="key", validatecommand=(self.valid_phone, '%P'))
 
         self.lbl_mail = Label(self.reg_screen, text="Mail ID", font=("Goudy old style", 10, "bold"),
-                              bg="#1BD7BB").place(x=75,
-                                                  y=270)
+                              bg="lemon chiffon").place(x=75,
+                                                        y=270)
         self.ent_mail = Entry(self.reg_screen, textvariable=self.v_mailId, font=("times new roman", 10, "bold"))
         self.ent_mail.place(x=200, y=270)
 
         self.lbl_gender = Label(self.reg_screen, text="Gender", font=("Goudy old style", 10, "bold"),
-                                bg="#1BD7BB").place(x=75,
-                                                    y=300)
-        Radiobutton(self.reg_screen, text="Male", bg="#1BD7BB", font=("times new roman", 10, "bold"), padx=5,
+                                bg="lemon chiffon").place(x=75,
+                                                          y=300)
+        Radiobutton(self.reg_screen, text="Male", bg="lemon chiffon", font=("times new roman", 10, "bold"), padx=5,
                     variable=self.v_gender, value=1).place(x=200, y=300)
-        Radiobutton(self.reg_screen, text="Female", bg="#1BD7BB", font=("times new roman", 10, "bold"), padx=5,
+        Radiobutton(self.reg_screen, text="Female", bg="lemon chiffon", font=("times new roman", 10, "bold"), padx=5,
                     variable=self.v_gender, value=2).place(x=260, y=300)
 
         self.lbl_country = Label(self.reg_screen, text="Country", font=("Goudy old style", 10, "bold"),
-                                 bg="#1BD7BB").place(x=75,
-                                                     y=330)
+                                 bg="lemon chiffon").place(x=75,
+                                                           y=330)
         self.list_country = {'India', 'Germany', 'Spain', 'Nepal', 'Canada'}
         # if we remove * list will be displayed horizantally
         self.droplist = OptionMenu(self.reg_screen, self.v_country, *self.list_country)
@@ -155,7 +155,7 @@ class Reg_screen(template):
         self.droplist.place(x=200, y=330)
 
         self.lbl_DOB = Label(self.reg_screen, text="Date of Birth", font=("Goudy old style", 10, "bold"),
-                             bg="#1BD7BB").place(
+                             bg="lemon chiffon").place(
             x=65, y=370)
         self.cal = DateEntry(self.reg_screen, textvaribale=self.v_DOB, width=12, year=2021, month=4, day=10,
                              background='darkblue', foreground='white', borderwidth=2)
@@ -165,8 +165,9 @@ class Reg_screen(template):
                                    font=("Helvetica", 12, "bold"),
                                    command=validateAllfields)
         self.btn_register.place(x=450, y=420)
-        self.loginredirect = Button(self.reg_screen, text="Already a user?Click here to login", bg="#1BD7BB", fg="white",
-                                    font=("Helvetica", 11, "bold"), borderwidth=0)
+        self.loginredirect = Button(self.reg_screen, text="Already a user?Click here to login", bg="lemon chiffon",
+                                    fg="black",
+                                    font=("Helvetica", 11, "bold"), relief="groove")
         self.loginredirect.place(x=175, y=450)
 
         self.btn_clear = Button(self.reg_screen, text="CLEAR", bg="#990F02", fg="white", font=("Helvetica", 10, "bold"),

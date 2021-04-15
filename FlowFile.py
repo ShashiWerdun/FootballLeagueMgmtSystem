@@ -1,5 +1,8 @@
 from tkinter import *
 
+from PIL import Image, ImageTk
+
+from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
 from ManagerList import managerlistFrame
@@ -34,9 +37,28 @@ def change_screens(startscreen, endscreen):
 
 
 def startup():
+    # screen change buttons
+    login_screen.loginbutton.config(command=lambda: change_screens(login_screen, home_screen))
+    login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
+    login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
+
+    registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
+
+    home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
+    home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
+    home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
+    home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
+    home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
+    home_screen.points_table_button.config(command=lambda: change_screens(home_screen, points_table_screen))
+    home_screen.sponsors_list_button.config(command=lambda: change_screens(home_screen, sponsor_list_screen))
+
+    profile_screen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
+
     global root
+    global image
     root.overrideredirect(False)
-    root.title("FOOTBALL LEAGUE")
+    root.title("FOOTBALLLAZA")
+    root.iconphoto(False, image)
     root.state("zoomed")
     root.resizable(0, 0)
     change_screens(splash_screen, login_screen)
@@ -44,6 +66,7 @@ def startup():
 
 root = Tk()
 
+image = ImageTk.PhotoImage(Image.open("Images/DBMS_LOGO.png"))
 screen_stack = []
 present_screen = None
 
@@ -64,6 +87,7 @@ match_list_screen = matchlistFrame(root)
 sponsor_list_screen = sponsorlistFrame(root)
 team_list_screen = teamlistFrame(root)
 team_stat_screen = TeamStatsScreen(root)
+favourites_screen = favouritesScreenframe(root)
 
 root.state("zoomed")
 root.overrideredirect(True)

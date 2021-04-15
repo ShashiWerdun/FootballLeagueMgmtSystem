@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
+
 from PIL import ImageTk, Image
+
 from ScreenTemplate import template
 
 
@@ -59,7 +61,7 @@ class favouritesScreenframe(template):
                        style="fvpl.TButton",
                        compound=TOP).pack(side=LEFT, padx=5)
     # fav managers done
-        Label(self.favscreenframe, text="Your Favourite Managers", font=("Constantia", 16, "bold")).place(x=7, y=560)
+        Label(self.favscreenframe, text="Your Favourite Teams", font=("Constantia", 16, "bold")).place(x=7, y=560)
         self.favteam_main_frame = Frame(self.favscreenframe)
         self.favteam_main_frame.place(x=7, y=590, relwidth=0.97, relheight=0.2)
         self.favteam_canvas = Canvas(self.favteam_main_frame)
