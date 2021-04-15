@@ -1,13 +1,19 @@
 from tkinter import *
-
 from PIL import ImageTk, Image, ImageFilter
-
+import cx_Oracle
 from ScreenTemplate import template
+from tkinter import messagebox
 
 
 class loginScreenFrame(template):
 
     def __init__(self, master):
+
+        cx_Oracle.init_oracle_client(lib_dir=r"F:\instantclient_19_9")
+        dsn_tns = cx_Oracle.makedsn('LAPTOP-V91679QP', '1521', service_name='XE')
+        conn = cx_Oracle.connect('dbms_files', 'dbms', dsn=dsn_tns)
+        self.users_cursor = conn.cursor()
+        users_cursor.execute("select * from usr")
         super().__init__(master)
         self.login_frame = Frame(self.baseFrame)
         img_raw = Image.open('Images\SplashScreen.jpeg')
@@ -35,3 +41,13 @@ class loginScreenFrame(template):
         Label(self.frame_login, text="Contact us at:***********", font=("times new roman", 8), bg="White").place(x=375,
                                                                                                                  y=275)
         self.login_frame.place(x=0, y=0, relwidth=1, relheight=1)
+
+    def validate(self):
+        username_entered = self.userentry.get()
+        pass_entered = self.pwdentry.get()
+        for user in self.users_cursor:
+            if user[0] == username_entered and user[1] == pass_entered:
+                return True
+        messagebox.showwarning("Login Failed", "Invalid Credentials")
+
+        return False

@@ -16,6 +16,10 @@ from TeamList import teamlistFrame
 from TeamStatsScreen import TeamStatsScreen
 from reg_screen import Reg_screen
 
+def validationfunc(startscreen, endscreen):
+    if startscreen.validate():
+        change_screens(startscreen, endscreen)
+
 
 def change_screens(startscreen, endscreen):
     startscreen.destroy_frame()
@@ -66,7 +70,7 @@ root.overrideredirect(True)
 root.after(3000, lambda: startup())
 
 # screen change buttons
-login_screen.loginbutton.config(command=lambda: change_screens(login_screen, home_screen))
+login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
 login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
 login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
 
