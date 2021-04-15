@@ -1,9 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
-
+import re
 from PIL import ImageTk, ImageFilter, Image
 from tkcalendar import DateEntry
-
+import cx_Oracle
 from ScreenTemplate import template
 
 
@@ -35,49 +35,6 @@ class Reg_screen(template):
         self.v_username = StringVar()
         self.v_pwd = StringVar()
         self.v_confirmpwd = StringVar()
-
-        def valid_phonenum(user_num):
-            if user_num.isdigit():
-                return True
-            else:
-                messagebox.showinfo('Information', 'Only digits are allowed for Mobile Number')
-                return False
-
-        def isvalidemail(user_mail):
-            if len(user_mail) > 7:
-                regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
-                if re.match(regex, user_mail) != None:
-                    return True
-                else:
-                    messagebox.showinfo('Error', 'This is not a Valid Email Address')
-                    return False
-            else:
-                messagebox.showinfo('Error', 'This is not a Valid Email Address')
-                return False
-
-        def validateAllfields():
-            if self.v_username.get() == "":
-                messagebox.showinfo('Information', 'Enter UserName to proceed')
-            elif self.v_pwd.get() == "":
-                messagebox.showinfo('Information', 'Enter pwd to proceed')
-            elif self.v_name.get() == "":
-                messagebox.showinfo('Information', 'Enter Name to proceed')
-            elif self.v_mobile.get() == "":
-                messagebox.showinfo('Information', 'Enter Mobile Number to proceed')
-            elif self.v_mailId.get() == "":
-                messagebox.showinfo('Information', 'Enter Mail ID to proceed')
-            elif self.v_gender.get() == 0:
-                messagebox.showinfo('Information', 'Select Gender to proceed')
-            elif self.v_country.get() == "" or self.v_country.get() == "Select your Country":
-                messagebox.showinfo('Information', 'Select Country to proceed')
-            elif self.v_pwd.get() != self.v_confirmpwd.get():
-                messagebox.showinfo('Error', 'Password Mismatch')
-            elif self.v_mailId.get() != "":
-                status = isvalidemail(self.v_mailId.get())
-                if (status):
-                    messagebox.showinfo('', 'Registration Successful')
-                else:
-                    messagebox.showinfo('', 'Registration Unsuccessful')
 
         def clearallfields():
             self.v_username.set("")
@@ -127,6 +84,12 @@ class Reg_screen(template):
         self.ent_mobile = Entry(self.reg_screen, textvariable=self.v_mobile, font=("times new roman", 10, "bold"))
         self.ent_mobile.place(x=200, y=240)
         # mobile num verification
+        def valid_phonenum(user_num):
+            if user_num.isdigit():
+                return True
+            else:
+                messagebox.showinfo('Information', 'Only digits are allowed for Mobile Number')
+                return False
         self.valid_phone = self.reg_screen.register(valid_phonenum)
         self.ent_mobile.config(validate="key", validatecommand=(self.valid_phone, '%P'))
 
@@ -162,8 +125,7 @@ class Reg_screen(template):
         self.cal.place(x=200, y=370)
 
         self.btn_register = Button(self.reg_screen, text="REGISTER", bg="#990F02", fg="white",
-                                   font=("Helvetica", 12, "bold"),
-                                   command=validateAllfields)
+                                   font=("Helvetica", 12, "bold"),)
         self.btn_register.place(x=450, y=420)
         self.loginredirect = Button(self.reg_screen, text="Already a user?Click here to login", bg="lemon chiffon",
                                     fg="black",
@@ -174,3 +136,49 @@ class Reg_screen(template):
                                 command=clearallfields)
         self.btn_clear.place(x=60, y=420)
         self.mainframe.place(x=0, y=0, relwidth=1, relheight=1)
+
+    def validate(self):
+        def isvalidemail(user_mail):
+            if len(user_mail) > 7:
+                regex = '^(\w|\.|\_|\-)+[@](\w|\_|\-|\.)+[.]\w{2,3}$'
+                if re.match(regex, user_mail) != None:
+                    return True
+                else:
+                    messagebox.showinfo('Error', 'This is not a Valid Email Address')
+                    return False
+            else:
+                messagebox.showinfo('Error', 'This is not a Valid Email Address')
+                return False
+        if self.v_username.get() == "":
+            messagebox.showinfo('Information', 'Enter UserName to proceed')
+        elif self.v_pwd.get() == "":
+            messagebox.showinfo('Information', 'Enter pwd to proceed')
+        elif self.v_name.get() == "":
+            messagebox.showinfo('Information', 'Enter Name to proceed')
+        elif self.v_mobile.get() == "":
+            messagebox.showinfo('Information', 'Enter Mobile Number to proceed')
+        elif self.v_mailId.get() == "":
+            messagebox.showinfo('Information', 'Enter Mail ID to proceed')
+        elif self.v_gender.get() == 0:
+            messagebox.showinfo('Information', 'Select Gender to proceed')
+        elif self.v_country.get() == "" or self.v_country.get() == "Select your Country":
+            messagebox.showinfo('Information', 'Select Country to proceed')
+        elif self.v_pwd.get() != self.v_confirmpwd.get():
+            messagebox.showinfo('Error', 'Password Mismatch')
+        elif self.v_mailId.get() != "":
+            status = isvalidemail(self.v_mailId.get())
+            if status:
+
+                dsn_tns = cx_Oracle.makedsn('LAPTOP-V91679QP', '1521', service_name='XE')
+                self.conn = cx_Oracle.connect('dbms_files', 'dbms', dsn=dsn_tns)
+                self.users_cursor = self.conn.cursor()
+                querystring = f"insert into usr values('{self.v_username.get()}','{self.v_pwd.get()}', userid_seq.nextval)"
+                self.users_cursor.execute(querystring)
+                self.conn.commit()
+                self.users_cursor.close()
+                self.conn.close()
+                messagebox.showinfo('Success', 'Registration Successful')
+                return True
+            else:
+                messagebox.showinfo('Failed', 'Registration Unsuccessful')
+                return False

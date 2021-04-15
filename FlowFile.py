@@ -1,7 +1,7 @@
 from tkinter import *
 
 from PIL import Image, ImageTk
-
+import cx_Oracle
 from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
@@ -37,12 +37,15 @@ def change_screens(startscreen, endscreen):
 
 
 def startup():
+    # starting the database
+    cx_Oracle.init_oracle_client(lib_dir=r"F:\instantclient_19_9")
     # screen change buttons
-    login_screen.loginbutton.config(command=lambda: change_screens(login_screen, home_screen))
+    login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
     login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
     login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
 
     registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
+    registration_screen.btn_register.config(command=lambda: validationfunc(registration_screen, login_screen))
 
     home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
     home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
@@ -94,17 +97,17 @@ root.overrideredirect(True)
 root.after(3000, lambda: startup())
 
 # screen change buttons
-login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
-login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
-login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
-
-registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
-
-home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
-home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
-home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
-home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
-home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
+# login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
+# login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
+# login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
+#
+# registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
+#
+# home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
+# home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
+# home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
+# home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
+# home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
 
 
 root.mainloop()

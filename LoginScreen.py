@@ -8,12 +8,16 @@ from tkinter import messagebox
 class loginScreenFrame(template):
 
     def __init__(self, master):
-
-        cx_Oracle.init_oracle_client(lib_dir=r"F:\instantclient_19_9")
         dsn_tns = cx_Oracle.makedsn('LAPTOP-V91679QP', '1521', service_name='XE')
-        conn = cx_Oracle.connect('dbms_files', 'dbms', dsn=dsn_tns)
-        self.users_cursor = conn.cursor()
-        users_cursor.execute("select * from usr")
+        self.conn = cx_Oracle.connect('dbms_files', 'dbms', dsn=dsn_tns)
+        self.users_cursor = self.conn.cursor()
+        self.users_cursor.execute("select * from usr")
+        self.locallist = []
+        for user in self.users_cursor:
+            self.locallist.append(user)
+        self.users_cursor.close()
+        self.conn.close()
+
         super().__init__(master)
         self.login_frame = Frame(self.baseFrame)
         img_raw = Image.open('Images\SplashScreen.jpeg')
@@ -50,9 +54,10 @@ class loginScreenFrame(template):
     def validate(self):
         username_entered = self.userentry.get()
         pass_entered = self.pwdentry.get()
-        for user in self.users_cursor:
+        self.userentry.delete(0, 'end')
+        self.pwdentry.delete(0, 'end')
+        for user in self.locallist:
             if user[0] == username_entered and user[1] == pass_entered:
                 return True
         messagebox.showwarning("Login Failed", "Invalid Credentials")
-
         return False
