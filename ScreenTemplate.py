@@ -1,7 +1,7 @@
 from tkinter import *
 
 from PIL import ImageTk, Image
-
+import cx_Oracle
 
 class template:
 
@@ -10,7 +10,7 @@ class template:
         self.bgimage = ImageTk.PhotoImage(
             Image.open("Images/bgnew.jpg").resize((master.winfo_screenwidth(), master.winfo_screenheight()),
                                                   Image.ANTIALIAS))
-
+        self.dsn_tns = cx_Oracle.makedsn('LAPTOP-V91679QP', '1521', service_name='XE')
         self.master = master
         self.baseFrame = Frame(master)
         self.screenwidth = master.winfo_screenwidth()
@@ -26,3 +26,12 @@ class template:
 
     def destroy_frame(self):
         self.baseFrame.place_forget()
+
+    def open_a_connection(self):
+        self.forscreenconn = cx_Oracle.connect('dbms_files', 'dbms', dsn=self.dsn_tns)
+        self.acursor = self.forscreenconn.cursor()
+
+    def close_a_connection(self):
+        self.forscreenconn.commit()
+        self.acursor.close()
+        self.forscreenconn.close()

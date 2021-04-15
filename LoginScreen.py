@@ -1,35 +1,22 @@
 from tkinter import *
 from PIL import ImageTk, Image, ImageFilter
-import cx_Oracle
 from ScreenTemplate import template
 from tkinter import messagebox
 
 
 class loginScreenFrame(template):
-    def refresh_db(self):
-        dsn_tns = cx_Oracle.makedsn('LAPTOP-2G50GM3M', '1521', service_name='XE')
 
-        self.conn = cx_Oracle.connect('project', 'proj123', dsn=dsn_tns)
-        self.users_cursor = self.conn.cursor()
-        self.users_cursor.execute("select * from usr")
+    def refresh_db(self):
+        self.open_a_connection()
+        self.acursor.execute("select * from usr")
         self.locallist.clear()
-        for user in self.users_cursor:
+        for user in self.acursor:
             self.locallist.append(user)
-        self.users_cursor.close()
-        self.conn.close()
+        self.close_a_connection()
 
 
     def __init__(self, master):
-        dsn_tns = cx_Oracle.makedsn('LAPTOP-2G50GM3M', '1521', service_name='XE')
-        self.conn = cx_Oracle.connect('project', 'proj123', dsn=dsn_tns)
-        self.users_cursor = self.conn.cursor()
-        self.users_cursor.execute("select * from usr")
         self.locallist = []
-        for user in self.users_cursor:
-            self.locallist.append(user)
-        self.users_cursor.close()
-        self.conn.close()
-
         super().__init__(master)
         self.login_frame = Frame(self.baseFrame)
         img_raw = Image.open('Images\SplashScreen.jpeg')

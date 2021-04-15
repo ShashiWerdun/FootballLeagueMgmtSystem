@@ -3,7 +3,7 @@ from tkinter import messagebox
 import re
 from PIL import ImageTk, ImageFilter, Image
 from tkcalendar import DateEntry
-import cx_Oracle
+import random
 from ScreenTemplate import template
 
 
@@ -174,15 +174,17 @@ class Reg_screen(template):
         elif self.v_mailId.get() != "":
             status = isvalidemail(self.v_mailId.get())
             if status:
-
-                dsn_tns = cx_Oracle.makedsn('LAPTOP-2G50GM3M', '1521', service_name='XE')
-                self.conn = cx_Oracle.connect('project', 'proj123', dsn=dsn_tns)
-                self.users_cursor = self.conn.cursor()
-                querystring = f"insert into usr values('{self.v_username.get()}','{self.v_pwd.get()}', userid_seq.nextval)"
-                self.users_cursor.execute(querystring)
-                self.conn.commit()
-                self.users_cursor.close()
-                self.conn.close()
+                self.open_a_connection()
+                uid = 0
+                self.acursor.execute("select userid from usr")
+                for prevuid in self.acursor:
+                    uid = prevuid
+                uid = (int(uid[0]))+1
+                querystring = f"insert into usr values('{self.v_username.get()}','{self.v_pwd.get()}', {uid})"
+                self.acursor.execute(querystring)
+                fanquerystring = f"insert into fan values({uid}, '{self.v_name.get()}', '{self.v_mailId.get()}', {self.v_mobile.get()}, '{self.v_gender.get()}', '{self.v_DOB.get()}')"
+                self.acursor.execute(fanquerystring)
+                self.close_a_connection()
                 messagebox.showinfo('Success', 'Registration Successful')
                 return True
             else:
