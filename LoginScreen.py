@@ -1,7 +1,9 @@
 from tkinter import *
-from PIL import ImageTk, Image, ImageFilter
-from ScreenTemplate import template
 from tkinter import messagebox
+
+from PIL import ImageTk, Image, ImageFilter
+
+from ScreenTemplate import template
 
 
 class loginScreenFrame(template):
@@ -58,6 +60,6 @@ class loginScreenFrame(template):
         self.pwdentry.delete(0, 'end')
         for user in self.locallist:
             if user[0] == username_entered and user[1] == pass_entered:
-                return True
+                return (True, user[2])
         messagebox.showwarning("Login Failed", "Invalid Credentials")
-        return False
+        return (False, -1)

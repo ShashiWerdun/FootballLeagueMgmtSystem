@@ -1,7 +1,9 @@
+import os
 from tkinter import *
 
-from PIL import Image, ImageTk
 import cx_Oracle
+from PIL import Image, ImageTk
+
 from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
@@ -19,13 +21,22 @@ from TeamList import teamlistFrame
 from TeamStatsScreen import TeamStatsScreen
 from reg_screen import Reg_screen
 
+
 def validationfunc(startscreen, endscreen):
-    if startscreen.validate():
+    status = startscreen.validate()
+    if status[0]:
+        global userID
+        userID = status[1]
         change_screens(startscreen, endscreen)
 
 
 def change_screens(startscreen, endscreen):
     startscreen.destroy_frame()
+    global userID
+    if endscreen == login_screen:
+        userID = 0
+    if userID == 0 and endscreen == home_screen:
+        home_screen.profilebutton.place_forget()
     global present_screen
     if endscreen is None:
         endscreen = screen_stack.pop()
@@ -38,7 +49,7 @@ def change_screens(startscreen, endscreen):
 
 def startup():
     # starting the database
-    cx_Oracle.init_oracle_client(lib_dir=r"F:\instantclient_19_9")
+    cx_Oracle.init_oracle_client(lib_dir=os.environ.get("TNS_ADMIN"))
     # screen change buttons
     login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
     login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
@@ -68,6 +79,8 @@ def startup():
 
 
 root = Tk()
+
+userID = 0
 
 image = ImageTk.PhotoImage(Image.open("Images/DBMS_LOGO.png"))
 screen_stack = []
