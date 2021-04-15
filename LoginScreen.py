@@ -6,10 +6,22 @@ from tkinter import messagebox
 
 
 class loginScreenFrame(template):
+    def refresh_db(self):
+        dsn_tns = cx_Oracle.makedsn('LAPTOP-2G50GM3M', '1521', service_name='XE')
+
+        self.conn = cx_Oracle.connect('project', 'proj123', dsn=dsn_tns)
+        self.users_cursor = self.conn.cursor()
+        self.users_cursor.execute("select * from usr")
+        self.locallist.clear()
+        for user in self.users_cursor:
+            self.locallist.append(user)
+        self.users_cursor.close()
+        self.conn.close()
+
 
     def __init__(self, master):
-        dsn_tns = cx_Oracle.makedsn('LAPTOP-V91679QP', '1521', service_name='XE')
-        self.conn = cx_Oracle.connect('dbms_files', 'dbms', dsn=dsn_tns)
+        dsn_tns = cx_Oracle.makedsn('LAPTOP-2G50GM3M', '1521', service_name='XE')
+        self.conn = cx_Oracle.connect('project', 'proj123', dsn=dsn_tns)
         self.users_cursor = self.conn.cursor()
         self.users_cursor.execute("select * from usr")
         self.locallist = []
@@ -52,6 +64,7 @@ class loginScreenFrame(template):
         self.login_frame.place(x=0, y=0, relwidth=1, relheight=1)
 
     def validate(self):
+        self.refresh_db()
         username_entered = self.userentry.get()
         pass_entered = self.pwdentry.get()
         self.userentry.delete(0, 'end')

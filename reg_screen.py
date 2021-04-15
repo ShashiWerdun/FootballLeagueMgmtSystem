@@ -47,6 +47,11 @@ class Reg_screen(template):
         self.lbl_heading = Label(self.reg_screen, text="Registration Screen", font=("Verdana", 16, "bold"),
                                  bg="lemon chiffon").place(
             x=180, y=40)
+
+
+
+
+
         self.lbl_usrid = Label(self.reg_screen, text="User ID", font=("Goudy old style", 10, "bold"),
                                bg="lemon chiffon").place(x=75,
                                                          y=90)
@@ -137,6 +142,7 @@ class Reg_screen(template):
         self.btn_clear.place(x=60, y=420)
         self.mainframe.place(x=0, y=0, relwidth=1, relheight=1)
 
+
     def validate(self):
         def isvalidemail(user_mail):
             if len(user_mail) > 7:
@@ -169,8 +175,8 @@ class Reg_screen(template):
             status = isvalidemail(self.v_mailId.get())
             if status:
 
-                dsn_tns = cx_Oracle.makedsn('LAPTOP-V91679QP', '1521', service_name='XE')
-                self.conn = cx_Oracle.connect('dbms_files', 'dbms', dsn=dsn_tns)
+                dsn_tns = cx_Oracle.makedsn('LAPTOP-2G50GM3M', '1521', service_name='XE')
+                self.conn = cx_Oracle.connect('project', 'proj123', dsn=dsn_tns)
                 self.users_cursor = self.conn.cursor()
                 querystring = f"insert into usr values('{self.v_username.get()}','{self.v_pwd.get()}', userid_seq.nextval)"
                 self.users_cursor.execute(querystring)

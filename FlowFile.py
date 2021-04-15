@@ -38,7 +38,7 @@ def change_screens(startscreen, endscreen):
 
 def startup():
     # starting the database
-    cx_Oracle.init_oracle_client(lib_dir=r"F:\instantclient_19_9")
+    #cx_Oracle.init_oracle_client(lib_dir=r"C:\New folder\instantclient_19_10")
     # screen change buttons
     login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
     login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
