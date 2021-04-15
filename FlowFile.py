@@ -1,7 +1,5 @@
-import os
 from tkinter import *
 
-import cx_Oracle
 from PIL import Image, ImageTk
 
 from FavouritesScreen import favouritesScreenframe
@@ -37,6 +35,8 @@ def change_screens(startscreen, endscreen):
         userID = 0
     if userID == 0 and endscreen == home_screen:
         home_screen.profilebutton.place_forget()
+    elif userID != 0 and endscreen == home_screen:
+        home_screen.place_profile_button()
     global present_screen
     if endscreen is None:
         endscreen = screen_stack.pop()
@@ -49,7 +49,7 @@ def change_screens(startscreen, endscreen):
 
 def startup():
     # starting the database
-    cx_Oracle.init_oracle_client(lib_dir=os.environ.get("TNS_ADMIN"))
+    # cx_Oracle.init_oracle_client(lib_dir=os.environ.get("TNS_ADMIN"))
     # screen change buttons
     login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
     login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
@@ -108,19 +108,5 @@ favourites_screen = favouritesScreenframe(root)
 root.state("zoomed")
 root.overrideredirect(True)
 root.after(3000, lambda: startup())
-
-# screen change buttons
-# login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
-# login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
-# login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
-#
-# registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
-#
-# home_screen.profilebutton.config(command=lambda: change_screens(home_screen, profile_screen))
-# home_screen.players_list_button.config(command=lambda: change_screens(home_screen, player_list_screen))
-# home_screen.teams_list_button.config(command=lambda: change_screens(home_screen, team_list_screen))
-# home_screen.managers_list_button.config(command=lambda: change_screens(home_screen, manager_list_screen))
-# home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
-
 
 root.mainloop()

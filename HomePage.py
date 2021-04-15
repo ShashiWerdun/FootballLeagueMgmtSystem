@@ -12,6 +12,14 @@ class HomeScreenFrameGen(template):
     def __init__(self, master):
         super().__init__(master)
 
+        # database connection
+        self.locallist = []
+        self.open_a_connection()
+        self.acursor.execute(
+            "select stname, mdate, time, m1.tname, host from match m, match_team m1 where m.mid=m1.mid and m.host!=m1.tname and m.tot_goals is NULL")
+        self.locallist = [match for match in self.acursor]
+        self.close_a_connection()
+
         # required
         font = tkFont.Font(family="Courier New Greek", size=20)
 
@@ -69,24 +77,10 @@ class HomeScreenFrameGen(template):
                                  lambda e: self.fixture_canvas.configure(scrollregion=self.fixture_canvas.bbox("all")))
         self.fixture_Frame = Frame(self.fixture_canvas)
         self.fixture_canvas.create_window((0, 0), window=self.fixture_Frame, anchor="nw")
-        for option in [("Manchester United FC", "Liverpool", "03-04-2021", "7:30PM IST"),
-                       ("Chelsa FC", "Arsenel", "04-04-2021", "7:00 PST"),
-                       ("Manchester City FC", "Tottenham", "05-04-2021", "6:00 PST"),
-                       ("Leicester City", "Leeds United", "06-04-2021", "5:00 WST"),
-                       ("Manchester United FC", "Liverpool", "03-04-2021", "7:30PM IST"),
-                       ("Chelsa FC", "Arsenel", "04-04-2021", "7:00 PST"),
-                       ("Manchester City FC", "Tottenham", "05-04-2021", "6:00 PST"),
-                       ("Leicester City", "Leeds United", "06-04-2021", "5:00 WST"),
-                       ("Manchester United FC", "Liverpool", "03-04-2021", "7:30PM IST"),
-                       ("Chelsa FC", "Arsenel", "04-04-2021", "7:00 PST"),
-                       ("Manchester City FC", "Tottenham", "05-04-2021", "6:00 PST"),
-                       ("Leicester City", "Leeds United", "06-04-2021", "5:00 WST"),
-                       ("Manchester United FC", "Liverpool", "03-04-2021", "7:30PM IST"),
-                       ("Chelsa FC", "Arsenel", "04-04-2021", "7:00 PST"),
-                       ("Manchester City FC", "Tottenham", "05-04-2021", "6:00 PST"),
-                       ("Leicester City", "Leeds United", "06-04-2021", "5:00 WST")]:
+        print(self.locallist)
+        for option in self.locallist:
             Button(self.fixture_Frame,
-                   text=f"{option[0]}\nVs\n{option[1]}\nOn {option[2]} {option[3]}",
+                   text=f"{option[3]}\nVs\n{option[4]}\nOn {str(option[1].date())}, {option[2]} at {option[0]}",
                    font=("Comic Sans MS", 14),
                    bg="tan1",
                    width=25,
@@ -178,3 +172,6 @@ class HomeScreenFrameGen(template):
         self.sponsors_list_button.grid(row=2, column=3, padx=5, pady=5, sticky=EW)
 
         self.main_frame.pack(fill=BOTH, expand=1, ipadx=10, ipady=10)
+
+    def place_profile_button(self):
+        self.profilebutton.place(anchor=NE, x=self.usable_frame.winfo_screenwidth() - 40, y=15)
