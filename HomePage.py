@@ -13,11 +13,17 @@ class HomeScreenFrameGen(template):
         super().__init__(master)
 
         # database connection
-        self.locallist = []
+        self.fixtures_list = []
+        self.match_schedule_list = []
         self.open_a_connection()
+        # fixtures
         self.acursor.execute(
             "select stname, mdate, time, m1.tname, host from match m, match_team m1 where m.mid=m1.mid and m.host!=m1.tname and m.tot_goals is NULL")
-        self.locallist = [match for match in self.acursor]
+        self.fixtures_list = [match for match in self.acursor]
+        # schedule
+        self.acursor.execute(
+            "select m1.tname, host, mdate, time, stname from match m, match_team m1 where m.mid=m1.mid and m.host!=m1.tname")
+        self.match_schedule_list = [match for match in self.acursor]
         self.close_a_connection()
 
         # required
@@ -77,8 +83,8 @@ class HomeScreenFrameGen(template):
                                  lambda e: self.fixture_canvas.configure(scrollregion=self.fixture_canvas.bbox("all")))
         self.fixture_Frame = Frame(self.fixture_canvas)
         self.fixture_canvas.create_window((0, 0), window=self.fixture_Frame, anchor="nw")
-        print(self.locallist)
-        for option in self.locallist:
+        # print(self.fixtures_list)
+        for option in self.fixtures_list:
             Button(self.fixture_Frame,
                    text=f"{option[3]}\nVs\n{option[4]}\nOn {str(option[1].date())}, {option[2]} at {option[0]}",
                    font=("Comic Sans MS", 14),
@@ -109,40 +115,28 @@ class HomeScreenFrameGen(template):
         self.matchschedule.grid(row=1, column=0, columnspan=4)
 
         self.tree_scroll_bar.config(command=self.matchschedule.yview)
-        self.matchschedule['columns'] = ["MatchTeam1", "MatchTeam2", "Timeandday", "Stadium"]
+        self.matchschedule['columns'] = ["MatchTeam1", "MatchTeam2", "Day", "Time", "Stadium"]
         self.matchschedule.column("#0", width=0, stretch=NO)
         self.matchschedule.column("MatchTeam1", width=350, anchor=W)
         self.matchschedule.column("MatchTeam2", width=350, anchor=W)
-        self.matchschedule.column("Timeandday", width=350, anchor=CENTER)
+        self.matchschedule.column("Day", width=175, anchor=CENTER)
+        self.matchschedule.column("Time", width=175, anchor=CENTER)
         self.matchschedule.column("Stadium", width=200, anchor=CENTER)
 
         self.matchschedule.heading("#0", text="")
         self.matchschedule.heading("MatchTeam1", text="Team1", anchor=W)
         self.matchschedule.heading("MatchTeam2", text="Team2", anchor=W)
-        self.matchschedule.heading("Timeandday", text="When", anchor=CENTER)
+        self.matchschedule.heading("Day", text="Date", anchor=CENTER)
+        self.matchschedule.heading("Time", text="Time", anchor=CENTER)
         self.matchschedule.heading("Stadium", text="Location", anchor=CENTER)
-
-        schedulelist = [("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
-                        ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
-                        ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4"),
-                        ("Manchester United FC", "Liverpool", "03-04-2021 - 7:30PM IST", "Stadium1"),
-                        ("Chelsa FC", "Arsenel", "04-04-2021 - 7:00 PST", "Stadium2"),
-                        ("Manchester City FC", "Tottenham", "05-04-2021 - 6:00 PST", "Stadium3"),
-                        ("Leicester City", "Leeds United", "06-04-2021 - 5:00 WST", "Stadium4")]
 
         match_font = tkFont.Font(family="Calibri Light", size=16)
         self.matchschedule.tag_configure("oddrow", background="White", font=match_font)
         self.matchschedule.tag_configure("evenrow", background="gold2", font=match_font)
-        for record in enumerate(schedulelist):
+        for record in enumerate(self.match_schedule_list):
+            record = list(record)
+            record[1] = list(record[1])
+            record[1][2] = record[1][2].date()
             if record[0] % 2 == 0:
                 self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                           tags=("evenrow"))
