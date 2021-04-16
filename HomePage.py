@@ -83,14 +83,24 @@ class HomeScreenFrameGen(template):
                                  lambda e: self.fixture_canvas.configure(scrollregion=self.fixture_canvas.bbox("all")))
         self.fixture_Frame = Frame(self.fixture_canvas)
         self.fixture_canvas.create_window((0, 0), window=self.fixture_Frame, anchor="nw")
-        # print(self.fixtures_list)
-        for option in self.fixtures_list:
-            Button(self.fixture_Frame,
+        self.fixstyle = ttk.Style()
+        self.fixstyle.theme_use("alt")
+        self.fixstyle.configure("fixstyle.TButton", font=("Comic Sans MS", 14), bg="tan1",width=25,pady=4)
+        self.imageslist=[]
+        for option in self.locallist:
+            teamA = str(option[3]).lower()
+            teamB = str(option[4]).lower()
+            logo1 = Image.open(f"Images\{teamA}").resize((100, 100), Image.ANTIALIAS)
+            logo2 = Image.open(f"Images\{teamB}").resize((100, 100), Image.ANTIALIAS)
+            fiximage = Image.new('RGB', (200, 100), (250, 250, 250))
+            fiximage.paste(logo1, (0, 0))
+            fiximage.paste(logo2, (100, 0))
+            self.imageslist.append(fiximage)
+            tkimage = ImageTk.PhotoImage(fiximage)
+            ttk.Button(self.fixture_Frame,
                    text=f"{option[3]}\nVs\n{option[4]}\nOn {str(option[1].date())}, {option[2]} at {option[0]}",
-                   font=("Comic Sans MS", 14),
-                   bg="tan1",
-                   width=25,
-                   pady=4,
+                   style= "fixstyle.TButton",
+                    image=tkimage, compound=TOP,
                    borderwidth=0).pack(side=LEFT, padx=5)
         # Fixtures done
 
