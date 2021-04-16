@@ -49,7 +49,7 @@ class HomeScreenFrameGen(template):
 
         Label(self.usable_frame,
               text="Upcoming Matches",
-              font=("Constantia", 16, "bold")).place(x=7, y=100)
+              font=("Constantia", 16, "bold")).place(x=7, y=90)
         self.profileimg = ImageTk.PhotoImage(Image.open("Images\manprofilepic.png").resize((40, 40), Image.ANTIALIAS))
         self.ButtonStyleForProf = ttk.Style(master)
         self.ButtonStyleForProf.configure("Prof.TButton", background="Black", foreground="Black",
@@ -72,36 +72,37 @@ class HomeScreenFrameGen(template):
 
         # Fixtures
         self.fixture_main_frame = Frame(self.usable_frame)
-        self.fixture_main_frame.place(x=7, y=130, relwidth=0.97, relheight=0.175)
+        self.fixture_main_frame.place(x=7, y=120, relwidth=0.97, relheight=0.2)
         self.fixture_canvas = Canvas(self.fixture_main_frame)
         self.fixture_canvas.place(x=0, y=0, relwidth=1)
         self.fixture_scroll_bar = ttk.Scrollbar(self.fixture_main_frame, orient=HORIZONTAL,
                                                 command=self.fixture_canvas.xview)
-        self.fixture_scroll_bar.place(anchor=SW, x=0, y=150, relwidth=1)
+        self.fixture_scroll_bar.place(anchor=SW, x=0, y=175, relwidth=1)
         self.fixture_canvas.configure(xscrollcommand=self.fixture_scroll_bar.set)
         self.fixture_canvas.bind('<Configure>',
                                  lambda e: self.fixture_canvas.configure(scrollregion=self.fixture_canvas.bbox("all")))
         self.fixture_Frame = Frame(self.fixture_canvas)
         self.fixture_canvas.create_window((0, 0), window=self.fixture_Frame, anchor="nw")
         self.fixstyle = ttk.Style()
-        self.fixstyle.theme_use("alt")
-        self.fixstyle.configure("fixstyle.TButton", font=("Comic Sans MS", 14), bg="tan1",width=25,pady=4)
-        self.imageslist=[]
-        for option in self.locallist:
+        self.fixstyle.theme_use("clam")
+        self.fixstyle.configure("fixstyle.TButton", font=("Comic Sans MS", 10), background="thistle3", width=25, pady=4)
+        self.imageslist = []
+        for option in self.fixtures_list:
             teamA = str(option[3]).lower()
             teamB = str(option[4]).lower()
-            logo1 = Image.open(f"Images\{teamA}").resize((100, 100), Image.ANTIALIAS)
-            logo2 = Image.open(f"Images\{teamB}").resize((100, 100), Image.ANTIALIAS)
-            fiximage = Image.new('RGB', (200, 100), (250, 250, 250))
-            fiximage.paste(logo1, (0, 0))
-            fiximage.paste(logo2, (100, 0))
-            self.imageslist.append(fiximage)
-            tkimage = ImageTk.PhotoImage(fiximage)
+            self.logo1 = Image.open(f"Images\{teamA}.jpeg").resize((100, 100), Image.ANTIALIAS)
+            self.logo2 = Image.open(f"Images\{teamB}.jpeg").resize((100, 100), Image.ANTIALIAS)
+            self.fiximage = Image.new('RGB', (200, 100), (250, 250, 250))
+            self.fiximage.paste(self.logo1, (0, 0))
+            self.fiximage.paste(self.logo2, (100, 0))
+            self.imageslist.append(self.logo1)
+            self.imageslist.append(self.logo2)
+            self.imageslist.append(self.fiximage)
+            self.tkimage = ImageTk.PhotoImage(self.fiximage)
             ttk.Button(self.fixture_Frame,
-                   text=f"{option[3]}\nVs\n{option[4]}\nOn {str(option[1].date())}, {option[2]} at {option[0]}",
-                   style= "fixstyle.TButton",
-                    image=tkimage, compound=TOP,
-                   borderwidth=0).pack(side=LEFT, padx=5)
+                       text=f"On {str(option[1].date())}, {option[2]}\nat {option[0]}",
+                       style="fixstyle.TButton",
+                       image=self.tkimage, compound=TOP).pack(side=LEFT, padx=5)
         # Fixtures done
 
         # match schedule
