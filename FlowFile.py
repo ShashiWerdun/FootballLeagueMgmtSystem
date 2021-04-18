@@ -34,6 +34,12 @@ def stats_change(startscreen, endscreen, treeobject):
     change_screens(startscreen, endscreen)
 
 
+def match_stats_change(startscreen, endscreen, treeobject):
+    primkey = treeobject.focus()
+    endscreen.__init__(root, primkey)
+    change_screens(startscreen, endscreen)
+
+
 def change_screens(startscreen, endscreen):
     startscreen.destroy_frame()
     global userID
@@ -73,9 +79,11 @@ def startup():
     home_screen.sponsors_list_button.config(command=lambda: change_screens(home_screen, sponsor_list_screen))
 
     profile_screen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
-
     team_list_screen.teams_tree.bind('<ButtonRelease-1>', lambda c: stats_change(team_list_screen, team_stat_screen,
                                                                                  team_list_screen.teams_tree))
+    home_screen.matchschedule.bind('<ButtonRelease-1>',
+                                   lambda c: match_stats_change(home_screen, match_stat_screen,
+                                                                home_screen.matchschedule))
     player_list_screen.players_tree.bind('<ButtonRelease-1>',
                                          lambda c: stats_change(player_list_screen, player_stat_screen,
                                                                 player_list_screen.players_tree))
@@ -108,7 +116,7 @@ login_screen = loginScreenFrame(root)
 home_screen = HomeScreenFrameGen(root)
 registration_screen = Reg_screen(root)
 profile_screen = ProfileScreen(root)
-# match_stat_screen = MatchStatsScreen(root)
+match_stat_screen = MatchStatsScreen(root)
 player_list_screen = playerlistFrame(root)
 player_stat_screen = PlayerStatsScreen(root)
 points_table_screen = pointsTableFrame(root)
