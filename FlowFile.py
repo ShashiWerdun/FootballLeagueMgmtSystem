@@ -6,8 +6,10 @@ from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
 from ManagerList import managerlistFrame
-from MatchList import matchlistFrame
+from ManagerStatsScreen import ManagerStatsScreen
+from MatchStatsScreen import MatchStatsScreen
 from PlayerList import playerlistFrame
+from PlayerStatsScreen import PlayerStatsScreen
 from PointsTable import pointsTableFrame
 from ProfileScreen import ProfileScreen
 from SplashScreen import splashScreenFrames
@@ -28,6 +30,12 @@ def validationfunc(startscreen, endscreen):
 def stats_change(startscreen, endscreen, treeobject):
     focusid = treeobject.focus()
     primkey = (treeobject.item(focusid, 'values'))[0]
+    endscreen.__init__(root, primkey)
+    change_screens(startscreen, endscreen)
+
+
+def match_stats_change(startscreen, endscreen, treeobject):
+    primkey = treeobject.focus()
     endscreen.__init__(root, primkey)
     change_screens(startscreen, endscreen)
 
@@ -71,9 +79,11 @@ def startup():
     home_screen.sponsors_list_button.config(command=lambda: change_screens(home_screen, sponsor_list_screen))
 
     profile_screen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
-    treeobject = team_list_screen.teams_tree
     team_list_screen.teams_tree.bind('<ButtonRelease-1>', lambda c: stats_change(team_list_screen, team_stat_screen,
                                                                                  team_list_screen.teams_tree))
+    home_screen.matchschedule.bind('<ButtonRelease-1>',
+                                   lambda c: match_stats_change(home_screen, match_stat_screen,
+                                                                home_screen.matchschedule))
 
     global root
     global image
@@ -100,13 +110,12 @@ login_screen = loginScreenFrame(root)
 home_screen = HomeScreenFrameGen(root)
 registration_screen = Reg_screen(root)
 profile_screen = ProfileScreen(root)
-# match_stat_screen = MatchStatsScreen(root)
+match_stat_screen = MatchStatsScreen(root)
 player_list_screen = playerlistFrame(root)
-# player_stat_screen = PlayerStatsScreen(root)
+player_stat_screen = PlayerStatsScreen(root)
 points_table_screen = pointsTableFrame(root)
 manager_list_screen = managerlistFrame(root)
-# manager_stat_screen = ManagerStatsScreen(root)
-match_list_screen = matchlistFrame(root)
+manager_stat_screen = ManagerStatsScreen(root)
 sponsor_list_screen = sponsorlistFrame(root)
 team_list_screen = teamlistFrame(root)
 team_stat_screen = TeamStatsScreen(root)

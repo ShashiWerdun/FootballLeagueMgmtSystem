@@ -22,7 +22,7 @@ class HomeScreenFrameGen(template):
         self.fixtures_list = [match for match in self.acursor]
         # schedule
         self.acursor.execute(
-            "select m1.tname, host, mdate, time, stname from match m, match_team m1 where m.mid=m1.mid and m.host!=m1.tname")
+            "select m1.tname, host, mdate, time, stname, m.mid from match m, match_team m1 where m.mid=m1.mid and m.host!=m1.tname")
         self.match_schedule_list = [match for match in self.acursor]
         self.close_a_connection()
 
@@ -147,12 +147,14 @@ class HomeScreenFrameGen(template):
         for record in enumerate(self.match_schedule_list):
             record = list(record)
             record[1] = list(record[1])
+            mid = record[1][-1]
+            record[1] = record[1][0:-1]
             record[1][2] = record[1][2].date()
             if record[0] % 2 == 0:
-                self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                self.matchschedule.insert(parent="", index=END, iid=mid, text="", values=record[1],
                                           tags=("evenrow"))
             else:
-                self.matchschedule.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                self.matchschedule.insert(parent="", index=END, iid=mid, text="", values=record[1],
                                           tags=("oddrow"))
 
         for _ in range(4):
