@@ -6,6 +6,7 @@ from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
 from ManagerList import managerlistFrame
+from ManagerStatsScreen import ManagerStatsScreen
 from MatchList import matchlistFrame
 from PlayerList import playerlistFrame
 from PlayerStatsScreen import PlayerStatsScreen
@@ -78,6 +79,9 @@ def startup():
     player_list_screen.players_tree.bind('<ButtonRelease-1>',
                                          lambda c: stats_change(player_list_screen, player_stat_screen,
                                                                 player_list_screen.players_tree))
+    manager_list_screen.managers_tree.bind('<ButtonRelease-1>',
+                                           lambda c: stats_change(manager_list_screen, manager_stat_screen,
+                                                                  manager_list_screen.managers_tree))
 
     global root
     global image
@@ -109,7 +113,7 @@ player_list_screen = playerlistFrame(root)
 player_stat_screen = PlayerStatsScreen(root)
 points_table_screen = pointsTableFrame(root)
 manager_list_screen = managerlistFrame(root)
-# manager_stat_screen = ManagerStatsScreen(root)
+manager_stat_screen = ManagerStatsScreen(root)
 match_list_screen = matchlistFrame(root)
 sponsor_list_screen = sponsorlistFrame(root)
 team_list_screen = teamlistFrame(root)
