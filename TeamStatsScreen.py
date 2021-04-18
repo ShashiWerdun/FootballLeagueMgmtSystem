@@ -12,7 +12,7 @@ class TeamStatsScreen(template):
         if id is not None:
             super().__init__(master)
             self.teamStat_frame = Frame(self.baseFrame)
-            self.tname = id
+            self.tname = id[0]
 
             # data retrival
             self.open_a_connection()

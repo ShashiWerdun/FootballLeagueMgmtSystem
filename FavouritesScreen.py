@@ -26,7 +26,7 @@ class favouritesScreenframe(template):
                                        scrollregion=self.favplayer_canvas.bbox("all")))
         self.favplayer_Frame = Frame(self.favplayer_canvas)
         self.favplayer_canvas.create_window((0, 0), window=self.favplayer_Frame, anchor="nw")
-        self.imageimage = ImageTk.PhotoImage(Image.open("Images\Messi1.png").resize((100, 100), Image.ANTIALIAS))
+        self.imageimage = ImageTk.PhotoImage(Image.open("Images\messi.png").resize((100, 100), Image.ANTIALIAS))
         for option in range(25):
             self.sty = ttk.Style()
             self.sty.configure("fvpl.TButton", font=("Comic Sans MS", 8, "bold"))
@@ -51,7 +51,7 @@ class favouritesScreenframe(template):
                                        scrollregion=self.favmanager_canvas.bbox("all")))
         self.favmanager_Frame = Frame(self.favmanager_canvas)
         self.favmanager_canvas.create_window((0, 0), window=self.favmanager_Frame, anchor="nw")
-        self.manaimage = ImageTk.PhotoImage(Image.open("Images\Messi1.png").resize((100, 100), Image.ANTIALIAS))
+        self.manaimage = ImageTk.PhotoImage(Image.open("Images\messi.png").resize((100, 100), Image.ANTIALIAS))
         for option in range(25):
             self.sty = ttk.Style()
             self.sty.configure("fvpl.TButton", font=("Comic Sans MS", 8, "bold"))
@@ -75,7 +75,7 @@ class favouritesScreenframe(template):
                                         scrollregion=self.favteam_canvas.bbox("all")))
         self.favteam_Frame = Frame(self.favteam_canvas)
         self.favteam_canvas.create_window((0, 0), window=self.favteam_Frame, anchor="nw")
-        self.teamimage = ImageTk.PhotoImage(Image.open("Images\Messi1.png").resize((100, 100), Image.ANTIALIAS))
+        self.teamimage = ImageTk.PhotoImage(Image.open("Images\messi.png").resize((100, 100), Image.ANTIALIAS))
         for option in range(25):
             self.sty = ttk.Style()
             self.sty.configure("fvpl.TButton", font=("Comic Sans MS", 8, "bold"))

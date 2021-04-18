@@ -1,4 +1,3 @@
-import datetime
 import tkinter.font as tkFont
 from tkinter import *
 
@@ -8,71 +7,66 @@ from ScreenTemplate import template
 
 
 class PlayerStatsScreen(template):
-    def __init__(self, master):
-        super().__init__(master)
-        self.playerStat_frame = Frame(self.baseFrame)
 
-        # display player picture
-        dp_raw = Image.open('Images\SplashScreen.jpeg')
-        dp_raw = dp_raw.resize((self.screenwidth // 4, self.screenheight // 4), Image.ANTIALIAS)
-        self.dp = ImageTk.PhotoImage(dp_raw)
-        pic = Label(self.playerStat_frame, image=self.dp)
-        pic.grid(column=0, rowspan=4)
+    def __init__(self, master, id=None):
+        if id is not None:
+            super().__init__(master)
+            self.playerStat_frame = Frame(self.baseFrame)
+            self.pname = id[0]
 
-        # display player's details
-        font = tkFont.Font(family="Goudy old style", size=18)
+            # data retrival
+            self.open_a_connection()
+            self.acursor.execute(
+                f"select name, rank, DOB, nation, team, MPPOS from participant natural join player where name='{self.pname}'")
+            self.player = list(self.acursor)
+            self.close_a_connection()
+            self.player = list(self.player[0])
+            # display player picture
+            dp_raw = Image.open(f'Images\{self.player[0].lower()}.png')
+            dp_raw = dp_raw.resize((400, 400), Image.ANTIALIAS)
+            self.dp = ImageTk.PhotoImage(dp_raw)
+            pic = Label(self.baseFrame, image=self.dp)
+            pic.place(x=265, y=230)
+            # display player's details
+            font = tkFont.Font(family="@HP Simplified Jpan", size=28)
 
-        # create fields
-        self.name_field = Label(self.playerStat_frame, text="Name: ", font=font, borderwidth=3, relief="ridge").grid(
-            row=0, column=1, sticky=EW)
-        self.age_field = Label(self.playerStat_frame, text="Age: ", font=font, borderwidth=3,
-                               relief="ridge").grid(row=1, column=1, sticky=EW)
-        self.gender_field = Label(self.playerStat_frame, text="Gender: ", font=font, borderwidth=3,
-                                  relief="ridge").grid(
-            row=2, column=1, sticky=EW)
-        self.dob_field = Label(self.playerStat_frame, text="Date of birth: ", font=font, borderwidth=3,
-                               relief="ridge").grid(row=3, column=1, sticky=EW)
-        self.nation_field = Label(self.playerStat_frame, text="Nationality: ", font=font, borderwidth=3,
-                                  relief="ridge").grid(row=4, column=1, sticky=EW)
-        self.sal_field = Label(self.playerStat_frame, text="Base salary: ", font=font, borderwidth=3,
-                               relief="ridge").grid(row=5, columnspan=2, column=0, sticky=EW)
-        self.mppos_field = Label(self.playerStat_frame, text="Most played position: ", font=font, borderwidth=3,
-                                 relief="ridge").grid(row=6, columnspan=2, column=0, sticky=EW)
-        self.goals_field = Label(self.playerStat_frame, text="League goals: ", font=font, borderwidth=3,
-                                 relief="ridge").grid(row=7, columnspan=2, column=0, sticky=EW)
-        self.rank_field = Label(self.playerStat_frame, text="League Rank: ", font=font, borderwidth=3,
-                                relief="ridge").grid(row=8, columnspan=2, column=0, sticky=EW)
+            # create fields
+            Label(self.playerStat_frame, text="Name: ", font=font, borderwidth=3, relief="ridge").grid(
+                row=0, column=0, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text="Rank: ", font=font, borderwidth=3,
+                  relief="ridge").grid(row=1, column=0, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text="Born on: ", font=font, borderwidth=3,
+                  relief="ridge").grid(
+                row=2, column=0, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text="Nationality: ", font=font, borderwidth=3,
+                  relief="ridge").grid(row=3, column=0, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text="Belongs to: ", font=font, borderwidth=3,
+                  relief="ridge").grid(row=4, column=0, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text="Most played position: ", font=font, borderwidth=3,
+                  relief="ridge").grid(row=5, column=0, sticky=EW, ipadx=10, ipady=5)
 
-        # fill the details
-        self.name = Label(self.playerStat_frame, text="Shashivardhan", font=font, borderwidth=3, relief="ridge").grid(
-            row=0, column=2, sticky=EW)
-        self.age = Label(self.playerStat_frame, text="19", font=font, borderwidth=3, relief="ridge").grid(
-            row=1, column=2, sticky=EW)
-        self.gender = Label(self.playerStat_frame, text="male", font=font, borderwidth=3, relief="ridge").grid(row=2,
-                                                                                                               column=2,
-                                                                                                               sticky=EW)
-        dob_string = datetime.date(year=2002, day=20, month=1)
-        self.dob = Label(self.playerStat_frame, text=dob_string, font=font, borderwidth=3, relief="ridge").grid(row=3,
-                                                                                                                column=2,
-                                                                                                                sticky=EW)
-        self.nation = Label(self.playerStat_frame, text="Indian", font=font, borderwidth=3,
-                            relief="ridge").grid(row=4, column=2, sticky=EW)
-        self.sal = Label(self.playerStat_frame, text="10,000K", font=font, borderwidth=3, relief="ridge").grid(row=5,
-                                                                                                               column=2,
-                                                                                                               sticky=EW)
-        self.mppos = Label(self.playerStat_frame, text="Left Forward", font=font, borderwidth=3, relief="ridge").grid(
-            row=6,
-            column=2,
-            sticky=EW)
-        self.goals = Label(self.playerStat_frame, text="20", font=font, borderwidth=3, relief="ridge").grid(row=7,
-                                                                                                            column=2,
-                                                                                                            sticky=EW)
-        self.rank = Label(self.playerStat_frame, text="#5", font=font, borderwidth=3, relief="ridge").grid(row=8,
-                                                                                                           column=2,
-                                                                                                           sticky=EW)
+            # fill the details
+            Label(self.playerStat_frame, text=self.player[0], font=font, borderwidth=3, relief="ridge").grid(
+                row=0, column=1, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text=self.player[1], font=font, borderwidth=3, relief="ridge").grid(
+                row=1, column=1, sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text=self.player[2].date(), font=font, borderwidth=3,
+                  relief="ridge").grid(row=2,
+                                       column=1,
+                                       sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text=self.player[3], font=font, borderwidth=3,
+                  relief="ridge").grid(row=3,
+                                       column=1,
+                                       sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text=self.player[4], font=font, borderwidth=3,
+                  relief="ridge").grid(
+                row=4,
+                column=1,
+                sticky=EW, ipadx=10, ipady=5)
+            Label(self.playerStat_frame, text=self.player[5], font=font, borderwidth=3, relief="ridge").grid(
+                row=5,
+                column=1,
+                sticky=EW, ipadx=10, ipady=5)
 
-        # display the final frame
-        pos_x = 3 * self.screenwidth // 8 - 200
-        pos_y = self.screenheight // 4
-        # self.profile_frame.grid(sticky="")
-        self.playerStat_frame.place(x=pos_x, y=pos_y)
+            # display the final frame
+            self.playerStat_frame.place(x=700, y=225)
