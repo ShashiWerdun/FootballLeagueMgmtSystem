@@ -15,8 +15,8 @@ class managerlistFrame(template):
         self.my_canvas.config(width=720, height=500)
         self.my_canvas.config(yscrollcommand=self.vbar.set)
         self.my_canvas.pack()
-        self.img = PhotoImage(file="Images\Messi1.png")
-        self.img1 = PhotoImage(file="Images\R2.png")
+        self.img = PhotoImage(file="Images\messi.png")
+        self.img1 = PhotoImage(file="Images\\ronaldo.png")
 
         self.my_canvas.create_text(63, 20, text="NAME", font="Times")
         self.my_canvas.create_line(125, 0, 125, 2000, fill="coral4")

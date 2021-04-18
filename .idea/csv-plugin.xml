@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\PlayerStatsScreen.py">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\reg_screen.py">
           <value>
             <Attribute>

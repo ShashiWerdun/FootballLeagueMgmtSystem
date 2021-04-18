@@ -29,7 +29,7 @@ def validationfunc(startscreen, endscreen):
 
 def stats_change(startscreen, endscreen, treeobject):
     focusid = treeobject.focus()
-    primkey = (treeobject.item(focusid, 'values'))[0]
+    primkey = (treeobject.item(focusid, 'values'))
     endscreen.__init__(root, primkey)
     change_screens(startscreen, endscreen)
 
@@ -84,6 +84,9 @@ def startup():
     home_screen.matchschedule.bind('<ButtonRelease-1>',
                                    lambda c: match_stats_change(home_screen, match_stat_screen,
                                                                 home_screen.matchschedule))
+    player_list_screen.players_tree.bind('<ButtonRelease-1>',
+                                         lambda c: stats_change(player_list_screen, player_stat_screen,
+                                                                player_list_screen.players_tree))
 
     global root
     global image
