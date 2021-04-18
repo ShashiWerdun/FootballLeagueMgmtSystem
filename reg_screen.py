@@ -5,6 +5,7 @@ from PIL import ImageTk, ImageFilter, Image
 from tkcalendar import DateEntry
 import random
 from ScreenTemplate import template
+from datetime import datetime
 
 
 class Reg_screen(template):
@@ -48,10 +49,6 @@ class Reg_screen(template):
                                  bg="lemon chiffon").place(
             x=180, y=40)
 
-
-
-
-
         self.lbl_usrid = Label(self.reg_screen, text="User ID", font=("Goudy old style", 10, "bold"),
                                bg="lemon chiffon").place(x=75,
                                                          y=90)
@@ -88,6 +85,7 @@ class Reg_screen(template):
             x=60, y=240)
         self.ent_mobile = Entry(self.reg_screen, textvariable=self.v_mobile, font=("times new roman", 10, "bold"))
         self.ent_mobile.place(x=200, y=240)
+
         # mobile num verification
         def valid_phonenum(user_num):
             if user_num.isdigit():
@@ -95,6 +93,7 @@ class Reg_screen(template):
             else:
                 messagebox.showinfo('Information', 'Only digits are allowed for Mobile Number')
                 return False
+
         self.valid_phone = self.reg_screen.register(valid_phonenum)
         self.ent_mobile.config(validate="key", validatecommand=(self.valid_phone, '%P'))
 
@@ -125,12 +124,13 @@ class Reg_screen(template):
         self.lbl_DOB = Label(self.reg_screen, text="Date of Birth", font=("Goudy old style", 10, "bold"),
                              bg="lemon chiffon").place(
             x=65, y=370)
-        self.cal = DateEntry(self.reg_screen, textvaribale=self.v_DOB, width=12, year=2021, month=4, day=10,
+        self.cal = DateEntry(self.reg_screen, textvariable=self.v_DOB, date_pattern='mm/dd/yyyy', width=12, year=2021,
+                             month=4, day=10,
                              background='darkblue', foreground='white', borderwidth=2)
         self.cal.place(x=200, y=370)
 
         self.btn_register = Button(self.reg_screen, text="REGISTER", bg="#990F02", fg="white",
-                                   font=("Helvetica", 12, "bold"),)
+                                   font=("Helvetica", 12, "bold"), )
         self.btn_register.place(x=450, y=420)
         self.loginredirect = Button(self.reg_screen, text="Already a user?Click here to login", bg="lemon chiffon",
                                     fg="black",
@@ -141,7 +141,6 @@ class Reg_screen(template):
                                 command=clearallfields)
         self.btn_clear.place(x=60, y=420)
         self.mainframe.place(x=0, y=0, relwidth=1, relheight=1)
-
 
     def validate(self):
         def isvalidemail(user_mail):
@@ -155,6 +154,7 @@ class Reg_screen(template):
             else:
                 messagebox.showinfo('Error', 'This is not a Valid Email Address')
                 return False
+
         if self.v_username.get() == "":
             messagebox.showinfo('Information', 'Enter UserName to proceed')
         elif self.v_pwd.get() == "":
@@ -179,14 +179,17 @@ class Reg_screen(template):
                 self.acursor.execute("select userid from usr")
                 for prevuid in self.acursor:
                     uid = prevuid
-                uid = (int(uid[0]))+1
+                uid = (int(uid[0])) + 1
                 querystring = f"insert into usr values('{self.v_username.get()}','{self.v_pwd.get()}', {uid})"
                 self.acursor.execute(querystring)
-                fanquerystring = f"insert into fan values({uid}, '{self.v_name.get()}', '{self.v_mailId.get()}', {self.v_mobile.get()}, '{self.v_gender.get()}', '{self.v_DOB.get()}')"
+                self.temp = datetime.strptime(self.v_DOB.get(), '%m/%d/%Y')
+                self.temp1 = self.temp.strftime('%d-%m-%Y')
+
+                fanquerystring = f"insert into fan values({uid}, '{self.v_name.get()}', '{self.v_mailId.get()}', {self.v_mobile.get()}, '{self.v_gender.get()}', TO_DATE('{self.temp1}','dd/mm/yyyy') )"
                 self.acursor.execute(fanquerystring)
                 self.close_a_connection()
                 messagebox.showinfo('Success', 'Registration Successful')
-                return True
+                return (True, 0)
             else:
                 messagebox.showinfo('Failed', 'Registration Unsuccessful')
-                return False
+                return (False, 0)
