@@ -15,7 +15,7 @@ class playerlistFrame(template):
         self.open_a_connection()
         # fixtures
         self.acursor.execute(
-            "select name, rank, DOB, nation, team, MPPOS from participant natural join player")
+            "select name, rank, DOB, nation, team, MPPOS from participant pa, player p where p.pid = pa.pid")
         self.players_list = [player for player in self.acursor]
         self.close_a_connection()
         # match schedule
