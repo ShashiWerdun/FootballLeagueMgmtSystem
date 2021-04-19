@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import font
 from tkinter import ttk
 
 from PIL import ImageTk, Image
@@ -10,6 +11,8 @@ class favouritesScreenframe(template):
     def __init__(self, master, uid=None):
         if uid is not None:
             super().__init__(master)
+            # start database connection
+            self.open_a_connection()
 
             # donot use this frame for inserting any widget. You should use another variable called usable_frame
             self.main_canvas = Canvas(self.baseFrame)
@@ -21,8 +24,6 @@ class favouritesScreenframe(template):
                                   lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all")))
             self.usable_frame = Frame(self.main_canvas)
             self.main_canvas.create_window((0, 0), window=self.usable_frame, anchor=NW)
-            # self.back_button = Button(self.usable_frame, image=self.backimage, font=("Verdana", 16, "bold"),
-            #                           borderwidth=1)
 
             # common style for favourites tree views
             self.treestyle = ttk.Style()
@@ -32,10 +33,18 @@ class favouritesScreenframe(template):
                                      fieldbackground="White")
             self.treestyle.map('favourites.Treeview', background=[('selected', 'coral4')])
             self.treestyle.configure("favourites.Treeview.Heading", font=("Malgun Gothic", 15, "bold"))
+            self.header_font = font.Font(family="Constantia", size=22, weight="bold")
 
             # FAVOURITE TEAMS
+            # favourite teams label
+            Label(self.usable_frame,
+                  text="Your favourite Teams", font=self.header_font, borderwidth=0).pack()
             # database connection
             self.fav_team_list = []
+            self.acursor.execute(
+                f"select tname, ceo, homeground from team where tname in (select tname from fav_team where fid = {uid})")
+            self.fav_team_list = [team for team in self.acursor]
+
             # treeview
             self.fav_team_frame = Frame(self.usable_frame)
             self.fav_team_frame.pack()
@@ -78,8 +87,14 @@ class favouritesScreenframe(template):
                 self.teams_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
 
             # FAVOURITE PLAYERS
+            # favourite players label
+            Label(self.usable_frame,
+                  text="Your favourite Players", font=self.header_font, borderwidth=0).pack()
             # database connection
             self.fav_players_list = []
+            self.acursor.execute(
+                f"select name, rank, DOB, nation, team, MPPOS from participant pa, player p where p.pid = pa.pid and p.pid in (select pid from fav_participant where fid = {uid})")
+            self.fav_players_list = [player for player in self.acursor]
             # treeview
             self.fav_players_frame = Frame(self.usable_frame)
             self.fav_players_frame.pack()
@@ -125,13 +140,19 @@ class favouritesScreenframe(template):
                 else:
                     self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                              tags=("oddrow"), image=self.fav_players_image_list[record[0]])
-                self.players_tree.insert(parent=record[0], index=1, text="", values=['Add to favourites'],
+                self.players_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
                                          tags=("favourite"))
                 self.players_tree.insert(parent=record[0], index=0, text="", values=["Open this player"], tags=("open"))
 
             # FAVOURITE MANAGERS
+            # favourite managers label
+            Label(self.usable_frame,
+                  text="Your favourite Managers", font=self.header_font, borderwidth=0).pack()
             # database connection
             self.fav_managers_list = []
+            self.acursor.execute(
+                f"select p.name, p.nation,p.DOB, p.team, m.hiredate, m.joindate from manager m, participant p where m.mid = p.pid and m.mid in (select pid from fav_team where fid = {uid})")
+            self.fav_managers_list = [manager for manager in self.acursor]
             # treeview
             self.fav_managers_frame = Frame(self.usable_frame)
             self.fav_managers_frame.pack()
@@ -178,6 +199,9 @@ class favouritesScreenframe(template):
                 else:
                     self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                               tags=("oddrow"), image=self.fav_managers_image_list[record[0]])
-                self.managers_tree.insert(parent=record[0], index=1, text="", values=['Add to favourites'],
+                self.managers_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
                                           tags=("favourite"))
                 self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
+
+            # close database connection
+            self.close_a_connection()

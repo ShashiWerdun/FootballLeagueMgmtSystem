@@ -102,7 +102,7 @@ class HomeScreenFrameGen(template):
             ttk.Button(self.fixture_Frame,
                        text=f"On {str(option[1].date())}, {option[2]}\nat {option[0]}",
                        style="fixstyle.TButton",
-                       image=self.tkimage, compound=TOP).pack(side=LEFT, padx=5)
+                       image=self.tkimage, compound=TOP).pack(side=LEFT, padx=5, ipadx=100)
         # Fixtures done
 
         # match schedule

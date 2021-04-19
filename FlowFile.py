@@ -47,10 +47,17 @@ def add_to_fav(treeobject, table_name):
     if messagebox.askokcancel('Adding to favourites', 'Do you want to add this to favourites?'):
         rowid = treeobject.parent(treeobject.focus())
         primkey = (treeobject.item(rowid, 'values'))[0]
+        primkey = "'" + primkey + "'"
         connection = cx_Oracle.connect('project', 'oracle',
                                        dsn=cx_Oracle.makedsn(socket.gethostname(), '1521', service_name='XE'))
+        if table_name == 'participant':
+            cursor = connection.cursor()
+            cursor.execute(f"select pid from participant where name={primkey}")
+            primkey = cursor.fetchone()
+            primkey = primkey[0]
         try:
-            connection.cursor().execute(f"insert into fav_{table_name} values({userID}, '{primkey}')")
+            print(f"insert into fav_{table_name} values({userID}, {primkey})")
+            connection.cursor().execute(f"insert into fav_{table_name} values({userID}, {primkey})")
             messagebox.showinfo('Added to favourites',
                                 f'This {table_name} has been successfully added to your favourites list!')
         except cx_Oracle.IntegrityError:
@@ -59,9 +66,73 @@ def add_to_fav(treeobject, table_name):
         connection.close()
 
 
+def remove_from_fav(treeobject, table_name):
+    key = {'team': 'tname', 'participant': 'pid'}
+    if messagebox.askokcancel('Remove from favourites', 'Do you want to remove this from favourites?'):
+        rowid = treeobject.parent(treeobject.focus())
+        primkey = (treeobject.item(rowid, 'values'))[0]
+        connection = cx_Oracle.connect('project', 'oracle',
+                                       dsn=cx_Oracle.makedsn(socket.gethostname(), '1521', service_name='XE'))
+        primkey = "'" + primkey + "'"
+        if table_name == 'participant':
+            cursor = connection.cursor()
+            cursor.execute(f"select pid from participant where name={primkey}")
+            primkey = cursor.fetchone()
+            primkey = primkey[0]
+        print(primkey)
+        try:
+            connection.cursor().execute(
+                f"delete from fav_{table_name} where fid={userID} and {key[table_name]}={primkey}")
+            connection.commit()
+            messagebox.showinfo('Remove from favourites',
+                                f'This {table_name} has been successfully removed from your favourites list!')
+            favourites_screen.back_button.invoke()
+            profile_screen.back_button.invoke()
+            home_screen.profilebutton.invoke()
+        except cx_Oracle.IntegrityError:
+            messagebox.showerror('Error removing from favourites', 'This item is not present in your favourites list!')
+        connection.close()
+
+
 def profile_button_click(startscreen, endscreen):
     endscreen.__init__(root, userID)
     favourites_screen.__init__(root, userID)
+
+    # FAVOURITE PLAYERS LIST BINDINGS
+    # single click to show row options
+    favourites_screen.players_tree.bind('<ButtonRelease-1>', lambda c: row_open(favourites_screen.players_tree))
+    # click on open row to open team stats
+    favourites_screen.players_tree.tag_bind("open", sequence='<ButtonRelease-1>',
+                                            callback=lambda e: stats_change(favourites_screen, player_stat_screen,
+                                                                            favourites_screen.players_tree))
+    # click on remove from favourites row to remove from favourites
+    favourites_screen.players_tree.tag_bind("favourite", sequence='<ButtonRelease-1>',
+                                            callback=lambda e: remove_from_fav(favourites_screen.players_tree,
+                                                                               'participant'))
+
+    # FAVOURITE TEAMS LIST BINDINGS
+    # single click to show row options
+    favourites_screen.teams_tree.bind('<ButtonRelease-1>', lambda c: row_open(favourites_screen.teams_tree))
+    # click on open row to open team stats
+    favourites_screen.teams_tree.tag_bind("open", sequence='<ButtonRelease-1>',
+                                          callback=lambda e: stats_change(favourites_screen, team_stat_screen,
+                                                                          favourites_screen.teams_tree))
+    # click on remove from favourites row to remove from favourites
+    favourites_screen.teams_tree.tag_bind("favourite", sequence='<ButtonRelease-1>',
+                                          callback=lambda e: remove_from_fav(favourites_screen.teams_tree, 'team'))
+
+    # FAVOURITE MANAGERS LIST BINDINGS
+    # single click to show row options
+    favourites_screen.managers_tree.bind('<ButtonRelease-1>', lambda c: row_open(favourites_screen.managers_tree))
+    # click on open row to open team stats
+    favourites_screen.managers_tree.tag_bind("open", sequence='<ButtonRelease-1>',
+                                             callback=lambda e: stats_change(favourites_screen, manager_stat_screen,
+                                                                             favourites_screen.managers_tree))
+    # click on remove from favourites row to remove from favourites
+    favourites_screen.managers_tree.tag_bind("favourite", sequence='<ButtonRelease-1>',
+                                             callback=lambda e: remove_from_fav(favourites_screen.managers_tree,
+                                                                                'participant'))
+
     endscreen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
     change_screens(startscreen, endscreen)
 
@@ -109,6 +180,7 @@ def startup():
     home_screen.logoutbutton.config(command=lambda: change_screens(home_screen, login_screen))
     home_screen.points_table_button.config(command=lambda: change_screens(home_screen, points_table_screen))
     home_screen.sponsors_list_button.config(command=lambda: change_screens(home_screen, sponsor_list_screen))
+    home_screen.matchschedule.bind('<ButtonRelease-1>', lambda c: match_stats_change())
 
     # TEAMS LIST BINDINGS
     # single click to show row options
@@ -130,7 +202,8 @@ def startup():
                                                                              player_list_screen.players_tree))
     # click on add to favourites row to add to favourites
     player_list_screen.players_tree.tag_bind("favourite", sequence='<ButtonRelease-1>',
-                                             callback=lambda e: add_to_fav(player_list_screen.players_tree, 'team'))
+                                             callback=lambda e: add_to_fav(player_list_screen.players_tree,
+                                                                           'participant'))
 
     # MANAGERS LIST BINDINGS
     # single click to show row options
@@ -138,15 +211,11 @@ def startup():
     # click on open row to open team stats
     manager_list_screen.managers_tree.tag_bind("open", sequence='<ButtonRelease-1>',
                                                callback=lambda e: stats_change(manager_list_screen, manager_stat_screen,
-                                                                               manager_stat_screen.managers_tree))
+                                                                               manager_list_screen.managers_tree))
     # click on add to favourites row to add to favourites
     manager_list_screen.managers_tree.tag_bind("favourite", sequence='<ButtonRelease-1>',
-                                               callback=lambda e: add_to_fav(manager_list_screen.managers_tree, 'team'))
-
-    home_screen.matchschedule.bind('<ButtonRelease-1>', lambda c: match_stats_change())
-    manager_list_screen.managers_tree.bind('<ButtonRelease-1>',
-                                           lambda c: stats_change(manager_list_screen, manager_stat_screen,
-                                                                  manager_list_screen.managers_tree))
+                                               callback=lambda e: add_to_fav(manager_list_screen.managers_tree,
+                                                                             'participant'))
 
     global root
     global image
