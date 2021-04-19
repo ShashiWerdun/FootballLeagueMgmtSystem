@@ -84,14 +84,13 @@ def remove_from_fav(treeobject, table_name):
             connection.cursor().execute(
                 f"delete from fav_{table_name} where fid={userID} and {key[table_name]}={primkey}")
             connection.commit()
+            connection.close()
             messagebox.showinfo('Remove from favourites',
                                 f'This {table_name} has been successfully removed from your favourites list!')
-            favourites_screen.back_button.invoke()
-            profile_screen.back_button.invoke()
-            home_screen.profilebutton.invoke()
+            favourites_screen.refresh_data(userID)
+            favourites_screen.refresh_display()
         except cx_Oracle.IntegrityError:
             messagebox.showerror('Error removing from favourites', 'This item is not present in your favourites list!')
-        connection.close()
 
 
 def profile_button_click(startscreen, endscreen):
