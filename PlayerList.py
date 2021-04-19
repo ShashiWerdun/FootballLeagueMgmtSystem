@@ -55,6 +55,8 @@ class playerlistFrame(template):
 
         self.players_tree.tag_configure("oddrow", background="White")
         self.players_tree.tag_configure("evenrow", background="gold2")
+        self.players_tree.tag_configure("open", background="pink")
+        self.players_tree.tag_configure("favourite", background="red")
         self.image_list = []
         for record in enumerate(self.players_list):
             record = list(record)
@@ -68,3 +70,6 @@ class playerlistFrame(template):
             else:
                 self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                          tags=("oddrow"), image=self.image_list[record[0]])
+            self.players_tree.insert(parent=record[0], index=1, text="", values=['Add to favourites'],
+                                     tags=("favourite"))
+            self.players_tree.insert(parent=record[0], index=0, text="", values=["Open this player"], tags=("open"))

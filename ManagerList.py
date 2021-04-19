@@ -46,7 +46,7 @@ class managerlistFrame(template):
         self.managers_tree.column("Hire date", width=170, anchor=W)
         self.managers_tree.column("Join date", width=170, anchor=W)
 
-        self.managers_tree.heading("#0", text="Player Image", anchor=CENTER)
+        self.managers_tree.heading("#0", text="Manager Image", anchor=CENTER)
         self.managers_tree.heading("Manager Name", text="Manager Name", anchor=W)
         self.managers_tree.heading("Date of Birth", text="Date of Birth", anchor=W)
         self.managers_tree.heading("Nationality", text="Nationality", anchor=W)
@@ -56,6 +56,8 @@ class managerlistFrame(template):
 
         self.managers_tree.tag_configure("oddrow", background="White")
         self.managers_tree.tag_configure("evenrow", background="gold2")
+        self.managers_tree.tag_configure("open", background="pink")
+        self.managers_tree.tag_configure("favourite", background="red")
         self.image_list = []
         for record in enumerate(self.managers_list):
             record = list(record)
@@ -69,3 +71,6 @@ class managerlistFrame(template):
             else:
                 self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                           tags=("oddrow"), image=self.image_list[record[0]])
+            self.managers_tree.insert(parent=record[0], index=1, text="", values=['Add to favourites'],
+                                      tags=("favourite"))
+            self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
