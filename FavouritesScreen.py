@@ -12,19 +12,17 @@ class favouritesScreenframe(template):
             super().__init__(master)
 
             # donot use this frame for inserting any widget. You should use another variable called usable_frame
-            self.main_frame = Frame(self.baseFrame)
-            self.main_canvas = Canvas(self.main_frame)
-            self.main_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+            self.main_canvas = Canvas(self.baseFrame)
+            self.main_canvas.place(x=200, y=0, relwidth=0.76, relheight=1)
             self.main_scroll_bar = ttk.Scrollbar(self.baseFrame, orient=VERTICAL, command=self.main_canvas.yview)
             self.main_scroll_bar.pack(side=RIGHT, fill=Y)
             self.main_canvas.configure(yscrollcommand=self.main_scroll_bar.set)
             self.main_canvas.bind('<Configure>',
                                   lambda e: self.main_canvas.configure(scrollregion=self.main_canvas.bbox("all")))
             self.usable_frame = Frame(self.main_canvas)
-            self.main_canvas.create_window((0, 0), window=self.usable_frame, anchor=NW, width=self.screenwidth,
-                                           height=self.screenheight)
-            # self.main_frame.pack(fill=BOTH, expand=1, ipadx=10, ipady=10)
-            self.main_frame.place(x=0, y=50, relwidth=1, relheight=1)
+            self.main_canvas.create_window((0, 0), window=self.usable_frame, anchor=NW)
+            # self.back_button = Button(self.usable_frame, image=self.backimage, font=("Verdana", 16, "bold"),
+            #                           borderwidth=1)
 
             # common style for favourites tree views
             self.treestyle = ttk.Style()
@@ -50,8 +48,8 @@ class favouritesScreenframe(template):
             self.fav_team_scroll_bar.config(command=self.teams_tree.yview)
             self.teams_tree['columns'] = ["Team Name", "CEO", "Home Stadium"]
             self.teams_tree.column("#0", width=200, anchor=CENTER)
-            self.teams_tree.column("Team Name", width=300, anchor=W)
-            self.teams_tree.column("CEO", width=250, anchor=W)
+            self.teams_tree.column("Team Name", width=330, anchor=W)
+            self.teams_tree.column("CEO", width=265, anchor=W)
             self.teams_tree.column("Home Stadium", width=350, anchor=W)
 
             self.teams_tree.heading("#0", text="Team Logo", anchor=CENTER)
@@ -95,10 +93,10 @@ class favouritesScreenframe(template):
             self.fav_players_scroll_bar.config(command=self.players_tree.yview)
             self.players_tree['columns'] = ["Player Name", "Rank", "Date of Birth", "Nation", "Team", "MPPOS"]
             self.players_tree.column("#0", width=150, anchor=CENTER)
-            self.players_tree.column("Player Name", width=250, anchor=W)
+            self.players_tree.column("Player Name", width=280, anchor=W)
             self.players_tree.column("Rank", width=60, anchor=W)
             self.players_tree.column("Date of Birth", width=150, anchor=W)
-            self.players_tree.column("Nation", width=120, anchor=W)
+            self.players_tree.column("Nation", width=140, anchor=W)
             self.players_tree.column("Team", width=195, anchor=W)
             self.players_tree.column("MPPOS", width=170, anchor=W)
 
