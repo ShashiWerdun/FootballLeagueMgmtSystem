@@ -1,4 +1,3 @@
-import datetime
 import tkinter.font as tkFont
 from tkinter import *
 from tkinter import ttk
@@ -20,7 +19,6 @@ class ProfileScreen(template):
             self.open_a_connection()
             self.acursor.execute(f"select name, phnum, gender, dob, mail from fan where fid = {uid}")
             self.user_details = list(self.acursor.fetchone())
-            print(self.user_details)
 
             # Favourites button
             self.style = ttk.Style()
@@ -58,7 +56,6 @@ class ProfileScreen(template):
                                 relief="ridge").grid(row=3,
                                                      column=1,
                                                      sticky=EW)
-            date_string = datetime.date(year=2002, day=20, month=1)
             self.dob = Label(self.profile_frame, text=self.user_details[3].strftime("%d-%m-%Y"), font=font,
                              borderwidth=3, relief="ridge").grid(row=4,
                                                                  column=1,

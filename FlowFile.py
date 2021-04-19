@@ -61,6 +61,7 @@ def add_to_fav(treeobject, table_name):
 
 def profile_button_click(startscreen, endscreen):
     endscreen.__init__(root, userID)
+    favourites_screen.__init__(root, userID)
     endscreen.favourites_button.config(command=lambda: change_screens(profile_screen, favourites_screen))
     change_screens(startscreen, endscreen)
 
