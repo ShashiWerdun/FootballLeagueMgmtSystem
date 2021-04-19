@@ -1,11 +1,12 @@
+import re
+from datetime import datetime
 from tkinter import *
 from tkinter import messagebox
-import re
+
 from PIL import ImageTk, ImageFilter, Image
 from tkcalendar import DateEntry
-import random
+
 from ScreenTemplate import template
-from datetime import datetime
 
 
 class Reg_screen(template):
@@ -185,7 +186,14 @@ class Reg_screen(template):
                 self.temp = datetime.strptime(self.v_DOB.get(), '%m/%d/%Y')
                 self.temp1 = self.temp.strftime('%d-%m-%Y')
 
-                fanquerystring = f"insert into fan values({uid}, '{self.v_name.get()}', '{self.v_mailId.get()}', {self.v_mobile.get()}, '{self.v_gender.get()}', TO_DATE('{self.temp1}','dd/mm/yyyy') )"
+                # gender
+                gender = str()
+                if self.v_gender.get() == 1:
+                    gender = 'M'
+                else:
+                    gender = 'F'
+
+                fanquerystring = f"insert into fan values({uid}, '{self.v_name.get()}', '{self.v_mailId.get()}', {self.v_mobile.get()}, '{gender}', TO_DATE('{self.temp1}','dd/mm/yyyy') )"
                 self.acursor.execute(fanquerystring)
                 self.close_a_connection()
                 messagebox.showinfo('Success', 'Registration Successful')

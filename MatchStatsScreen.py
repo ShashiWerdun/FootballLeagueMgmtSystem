@@ -20,8 +20,6 @@ class MatchStatsScreen(template):
             self.match_stats = list(self.acursor.fetchone())
             self.acursor.execute(f"select tname, goals from match_team where mid = {id}")
             self.team_goals = [list(row) for row in self.acursor]
-            print(self.match_stats)
-            print(self.team_goals)
             if self.match_stats[3] is None:
                 self.team_goals[0][1] = ''
                 self.team_goals[1][1] = ''
@@ -73,7 +71,7 @@ class MatchStatsScreen(template):
 
             # team performance row
             # teamA image
-            teamA_pic_raw = Image.open('Images\R2.png')
+            teamA_pic_raw = Image.open(f'Images\{self.team_goals[0][0].lower()}.jpeg')
             teamA_pic_raw = teamA_pic_raw.resize((self.screenwidth // 10, self.screenheight // 8), Image.ANTIALIAS)
             self.teamA_pic = ImageTk.PhotoImage(teamA_pic_raw)
             Label(self.MatchStatFrame, image=self.teamA_pic).grid(row=0, column=0)
@@ -86,7 +84,7 @@ class MatchStatsScreen(template):
             Label(self.MatchStatFrame, text=performance_string, font=("Goudy old style", 26, "bold"), borderwidth=4,
                   relief="ridge").grid(row=0, columnspan=2, column=1, sticky=EW)
             # teamB image
-            teamB_pic_raw = Image.open('Images\Messi1.png')
+            teamB_pic_raw = Image.open(f'Images\{self.team_goals[1][0].lower()}.jpeg')
             teamB_pic_raw = teamB_pic_raw.resize((self.screenwidth // 10, self.screenheight // 8), Image.ANTIALIAS)
             self.teamB_pic = ImageTk.PhotoImage(teamB_pic_raw)
             Label(self.MatchStatFrame, image=self.teamB_pic).grid(row=0, column=3)
