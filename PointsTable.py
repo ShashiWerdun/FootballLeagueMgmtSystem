@@ -14,6 +14,49 @@ class pointsTableFrame(template):
         self.tree_scroll.pack(side=RIGHT, fill=Y)
         self.usable_frame = Frame(self.tree_frame)
 
+        # get data from database
+        self.open_a_connection()
+        self.acursor.execute("select tname, pts from team order by pts desc")
+        self.teams_list = [team for team in self.acursor.fetchall()]
+        print(self.teams_list)
+        self.rows = []
+        for team in self.teams_list:
+            team_row = []
+            points = team[1]
+            team = team[0]
+            team_row.append(team)
+            self.acursor.execute(f"select count(*) from match_team where tname = '{team}'")
+            played = (self.acursor.fetchone())[0]
+            team_row.append(played)
+            self.acursor.execute(f"select count(*) from match where winner='{team}'")
+            wins = (self.acursor.fetchone())[0]
+            team_row.append(wins)
+            self.acursor.execute(
+                f"select count(*) from match m, match_team mt where winner is NULL and m.mid = mt.mid and mt.tname='{team}'")
+            draws = (self.acursor.fetchone())[0]
+            team_row.append(draws)
+            self.acursor.execute(
+                f"select count(*) from match where winner!='{team}' and winner is not NULL and mid in (select mid from match_team where tname='{team}')")
+            losses = (self.acursor.fetchone())[0]
+            team_row.append(losses)
+            self.acursor.execute(f"select sum(goals) from match_team where tname='{team}'")
+            goals_for = (self.acursor.fetchone())[0]
+            if goals_for is None:
+                goals_for = 0
+            team_row.append(goals_for)
+            self.acursor.execute(
+                f"select sum(goals) from match_team where tname!='{team}' and mid in (select mid from match_team where tname='{team}')")
+            goals_against = (self.acursor.fetchone())[0]
+            if goals_against is None:
+                goals_against = 0
+            team_row.append(goals_against)
+            team_row.append(goals_for - goals_against)
+            team_row.append(points)
+
+            print(team_row)
+            self.rows.append(team_row)
+        print(self.rows)
+
         self.style = ttk.Style()
         self.style.theme_use("clam")
         self.style.configure("pointstable.Treeview", background="Lemon Chiffon", foreground="black", rowheight=50,
@@ -52,22 +95,11 @@ class pointsTableFrame(template):
         self.my_tree.heading("GD (Goals Diff)", text="GD (Goals Diff)")
         self.my_tree.heading("Points", text="Points")
 
-        self.data = [
-            [1, 'Chelsa', 2, 5, 6, 7, 89, 345, 5, 0],
-            [2, 'Liverpool', 1, 67, 56, 77, 665, 4, 8, 90],
-            [3, 'Tottenham Hotspur', 3, 67, 765, 56, 78, 765, 900, 567],
-            [4, 'Barcelona', 2, 5, 6, 7, 89, 345, 5, 6],
-            [5, 'Paris saint-German', 3, 456, 6, 7, 89, 345, 5, 6],
-            [6, ' Borussia Dortmund', 3, 224, 6, 7, 89, 345, 5, 6],
-            [7, 'Manchester', 2, 5, 6, 7, 89, 345, 5, 6]
-        ]
-
         self.my_tree.tag_configure("oddrow", background="lemon chiffon3", font=("Malgun Gothic", 12))
         self.my_tree.tag_configure("evenrow", background="coral", font=("Malgun Gothic", 12))
-        self.count = 0
-        for record in enumerate(self.data):
+        for record in enumerate(self.rows):
+            record[1].insert(0, record[0] + 1)
             if record[0] % 2 == 0:
                 self.my_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1], tags=("evenrow"))
             else:
                 self.my_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1], tags=("oddrow"))
-            self.count += 1

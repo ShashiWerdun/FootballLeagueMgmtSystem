@@ -60,8 +60,13 @@ def add_to_fav(treeobject, table_name):
             connection.cursor().execute(f"insert into fav_{table_name} values({userID}, {primkey})")
             messagebox.showinfo('Added to favourites',
                                 f'This {table_name} has been successfully added to your favourites list!')
-        except cx_Oracle.IntegrityError:
-            messagebox.showerror('Error adding to favourites', 'This item is already present in your favourites list!')
+        except cx_Oracle.IntegrityError as e:
+            error_msg = str()
+            if 'PROJECT.FAV_TEAM_FK_FID' in str(e):
+                error_msg = 'You must be logged in to maintain favourites!'
+            else:
+                error_msg = 'This item is already present in your favourites list!'
+            messagebox.showerror('Error adding to favourites', error_msg)
         connection.commit()
         connection.close()
 
