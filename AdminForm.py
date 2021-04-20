@@ -9,6 +9,7 @@ class AdminForm(template):
     def __init__(self, master):
         super().__init__(master)
         self.form_frame = Frame(self.baseFrame)
+        self.insertion_form = Frame(self.baseFrame)
 
         # font for this screen
         self.form_font = font.Font(family='Microsoft YaHei UI', size=13, weight="bold")
@@ -37,13 +38,10 @@ class AdminForm(template):
     def admin_verify(self):
         username = self.username_entry.get()
         pwd = self.pwd_entry.get()
-        table = self.table_entry.get()
-        self.table_entry.delete(0, 'end')
-        self.pwd_entry.delete(0, 'end')
-        self.username_entry.delete(0, 'end')
+        table_name = self.table_entry.get()
 
         if username == 'admin' and pwd == 'admin123':
-            self.display_form(table)
+            self.display_form(table_name)
         else:
             messagebox.showerror('Admin Login Error', 'These are not valid admin credentials')
 
@@ -55,6 +53,38 @@ class AdminForm(template):
 
     def display_form(self, table_name):
         self.open_a_connection()
-        self.acursor.execute(f'desc {table_name}')
-        print(self.acursor.fetchall())
-        pass
+        self.acursor.execute(f"select column_name from user_tab_cols where table_name='{table_name.upper()}'")
+        self.attribute_list = [col[0] for col in self.acursor.fetchall()]
+        self.entry_list = []
+        for index, name in enumerate(self.attribute_list):
+            Label(self.insertion_form, text=name, font=self.form_font).grid(row=index, column=0)
+            self.entry_list.append(Entry(self.insertion_form, font=self.form_font))
+            self.entry_list[index].grid(row=index, column=1)
+        self.insertion_form.place(x=500, y=400)
+
+        self.insert_button = Button(self.insertion_form, text='Insert data', font=self.form_font,
+                                    command=lambda: self.insertion_function(table_name))
+        self.insert_button.grid(row=len(self.entry_list), columnspan=2)
+        print(self.attribute_list)
+        self.close_a_connection()
+
+    def insertion_function(self, table_name):
+        insertion_data = f"insert into {table_name.upper()} values("
+        for entry in self.entry_list:
+            insertion_data += (entry.get() + ",")
+            # clear entries
+            entry.delete(0, END)
+        insertion_data = insertion_data[:-1]
+        insertion_data += ")"
+        print(insertion_data)
+        self.open_a_connection()
+        self.acursor.execute(f"{insertion_data}")
+        self.close_a_connection()
+
+        # clear entries
+        self.table_entry.delete(0, 'end')
+        self.pwd_entry.delete(0, 'end')
+        self.username_entry.delete(0, 'end')
+
+        messagebox.showinfo('Insertion successful',
+                            'Your data has been successfully entered. Please restart your app to see changes.')
