@@ -155,7 +155,7 @@ class favouritesScreenframe(template):
         # data for favourite managers list
         self.fav_managers_list = []
         self.acursor.execute(
-            f"select p.name, p.nation,p.DOB, p.team, m.hiredate, m.joindate from manager m, participant p where m.mid = p.pid and m.mid in (select pid from fav_team where fid = {uid})")
+            f"select p.name, p.nation,p.DOB, p.team, m.hiredate, m.joindate from manager m, participant p where m.mid = p.pid and m.mid in (select pid from fav_participant where fid = {uid})")
         self.fav_managers_list = [manager for manager in self.acursor]
 
         # data for favourite players list
@@ -179,9 +179,11 @@ class favouritesScreenframe(template):
         for record in enumerate(self.fav_managers_list):
             record = list(record)
             record[1] = list(record[1])
+            record[1][-2] = record[1][-2].date()
+            record[1][-1] = record[1][-1].date()
             record[1][2] = record[1][2].date()
             self.fav_managers_image_list.append(ImageTk.PhotoImage(
-                Image.open(f"Images/{str(record[1][0]).lower()}.png").resize((60, 60), Image.ANTIALIAS)))
+                Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
             if record[0] % 2 == 0:
                 self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                           tags=("evenrow"), image=self.fav_managers_image_list[record[0]])
@@ -190,7 +192,7 @@ class favouritesScreenframe(template):
                                           tags=("oddrow"), image=self.fav_managers_image_list[record[0]])
             self.managers_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
                                       tags=("favourite"))
-            self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
+            self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this manager"], tags=("open"))
 
         # display favourite players list
         self.fav_players_image_list = []
@@ -199,7 +201,7 @@ class favouritesScreenframe(template):
             record[1] = list(record[1])
             record[1][2] = record[1][2].date()
             self.fav_players_image_list.append(ImageTk.PhotoImage(
-                Image.open(f"Images/{str(record[1][0]).lower()}.png").resize((60, 60), Image.ANTIALIAS)))
+                Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
             if record[0] % 2 == 0:
                 self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                          tags=("evenrow"), image=self.fav_players_image_list[record[0]])
@@ -216,7 +218,7 @@ class favouritesScreenframe(template):
             record = list(record)
             record[1] = list(record[1])
             self.fav_teams_image_list.append(ImageTk.PhotoImage(
-                Image.open(f"Images/{str(record[1][0]).lower()}.jpeg").resize((60, 60), Image.ANTIALIAS)))
+                Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
             if record[0] % 2 == 0:
                 self.teams_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                        tags=("evenrow"), image=self.fav_teams_image_list[record[0]])

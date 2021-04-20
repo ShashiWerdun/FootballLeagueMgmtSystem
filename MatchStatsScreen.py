@@ -29,7 +29,8 @@ class MatchStatsScreen(template):
                 self.total_goals = self.team_goals[0][1] + self.team_goals[1][1]
 
             # display stadium picture
-            stadium_pic_raw = Image.open('Images\SplashScreen.jpg')
+
+            stadium_pic_raw = Image.open(f'Images\Stadium\{self.match_stats[5].lower()}.jpg')
             stadium_pic_raw = stadium_pic_raw.resize((self.screenwidth // 4, self.screenheight // 4), Image.ANTIALIAS)
             self.stadium_pic = ImageTk.PhotoImage(stadium_pic_raw)
             Label(self.MatchStatFrame, image=self.stadium_pic).grid(rowspan=4, columnspan=2, column=2, row=2)
@@ -52,7 +53,7 @@ class MatchStatsScreen(template):
                                                                                                                 column=0,
                                                                                                                 sticky=EW)
             # Data:
-            datetime_string = str(self.match_stats[1]) + ' ' + self.match_stats[2]
+            datetime_string = str(self.match_stats[1].date()) + ' ' + self.match_stats[2]
             stadium_details = self.match_stats[5] + ', ' + self.match_stats[6]
             Label(self.MatchStatFrame, text=datetime_string, font=font, borderwidth=3, relief="ridge").grid(row=1,
                                                                                                             column=1,
@@ -71,7 +72,7 @@ class MatchStatsScreen(template):
 
             # team performance row
             # teamA image
-            teamA_pic_raw = Image.open(f'Images\{self.team_goals[0][0].lower()}.jpeg')
+            teamA_pic_raw = Image.open(f'Images\{self.team_goals[0][0].lower()}.jpg')
             teamA_pic_raw = teamA_pic_raw.resize((self.screenwidth // 10, self.screenheight // 8), Image.ANTIALIAS)
             self.teamA_pic = ImageTk.PhotoImage(teamA_pic_raw)
             Label(self.MatchStatFrame, image=self.teamA_pic).grid(row=0, column=0)
@@ -84,7 +85,7 @@ class MatchStatsScreen(template):
             Label(self.MatchStatFrame, text=performance_string, font=("Goudy old style", 26, "bold"), borderwidth=4,
                   relief="ridge").grid(row=0, columnspan=2, column=1, sticky=EW)
             # teamB image
-            teamB_pic_raw = Image.open(f'Images\{self.team_goals[1][0].lower()}.jpeg')
+            teamB_pic_raw = Image.open(f'Images\{self.team_goals[1][0].lower()}.jpg')
             teamB_pic_raw = teamB_pic_raw.resize((self.screenwidth // 10, self.screenheight // 8), Image.ANTIALIAS)
             self.teamB_pic = ImageTk.PhotoImage(teamB_pic_raw)
             Label(self.MatchStatFrame, image=self.teamB_pic).grid(row=0, column=3)

@@ -64,7 +64,7 @@ class ProfileScreen(template):
                               relief="ridge").grid(row=5, column=1, sticky=EW)
 
             # display profile picture
-            self.dp_raw = Image.open('Images\SplashScreen.jpeg')
+            self.dp_raw = Image.open('Images\manprofilepic.png')
             self.dp_raw = self.dp_raw.resize((250, 250), Image.ANTIALIAS)
             self.dp = ImageTk.PhotoImage(self.dp_raw)
             Label(self.baseFrame, image=self.dp).place(x=650, y=200)

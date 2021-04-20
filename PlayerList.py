@@ -20,7 +20,7 @@ class playerlistFrame(template):
         self.close_a_connection()
         # match schedule
         self.tree_frame = Frame(self.baseFrame)
-        self.tree_frame.place(x=225, y=100, relwidth=0.728, relheight=0.82)
+        self.tree_frame.place(x=225, y=100, relwidth=0.728, relheight=0.71)
         self.tree_scroll_bar = ttk.Scrollbar(self.tree_frame)
         self.tree_scroll_bar.grid(row=0, column=1, sticky=NS)
 
@@ -33,7 +33,9 @@ class playerlistFrame(template):
         self.treestyle.configure("teamlist.Treeview.Heading", font=("Malgun Gothic", 15, "bold"))
         self.players_tree = ttk.Treeview(self.tree_frame, yscrollcommand=self.tree_scroll_bar.set,
                                          style="teamlist.Treeview")
+
         self.players_tree.grid(row=0, column=0)
+        self.players_tree['height']=8
 
         self.tree_scroll_bar.config(command=self.players_tree.yview)
         self.players_tree['columns'] = ["Player Name", "Rank", "Date of Birth", "Nation", "Team", "MPPOS"]

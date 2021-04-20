@@ -57,12 +57,12 @@ class ManagerStatsScreen(template):
                   relief="ridge").grid(row=3,
                                        column=1,
                                        sticky=EW, ipadx=10, ipady=5)
-            Label(self.managerStat_frame, text=self.player[4], font=font, borderwidth=3,
+            Label(self.managerStat_frame, text=self.player[4].date(), font=font, borderwidth=3,
                   relief="ridge").grid(
                 row=4,
                 column=1,
                 sticky=EW, ipadx=10, ipady=5)
-            Label(self.managerStat_frame, text=self.player[5], font=font, borderwidth=3, relief="ridge").grid(
+            Label(self.managerStat_frame, text=self.player[5].date(), font=font, borderwidth=3, relief="ridge").grid(
                 row=5,
                 column=1,
                 sticky=EW, ipadx=10, ipady=5)

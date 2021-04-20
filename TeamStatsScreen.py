@@ -25,7 +25,7 @@ class TeamStatsScreen(template):
             dp_raw = dp_raw.resize((400, 400), Image.ANTIALIAS)
             self.dp = ImageTk.PhotoImage(dp_raw)
             pic = Label(self.baseFrame, image=self.dp)
-            pic.place(x=265, y=230)
+            pic.place(x=240, y=230)
             # display player's details
             font = tkFont.Font(family="@HP Simplified Jpan", size=30)
 
@@ -68,4 +68,4 @@ class TeamStatsScreen(template):
                 sticky=EW, ipadx=10, ipady=5)
 
             # display the final frame
-            self.teamStat_frame.place(x=700, y=225)
+            self.teamStat_frame.place(x=675, y=225)

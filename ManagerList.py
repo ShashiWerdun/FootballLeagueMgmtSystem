@@ -62,6 +62,8 @@ class managerlistFrame(template):
         for record in enumerate(self.managers_list):
             record = list(record)
             record[1] = list(record[1])
+            record[1][-2] = record[1][-2].date()
+            record[1][-1] = record[1][-1].date()
             record[1][2] = record[1][2].date()
             self.image_list.append(ImageTk.PhotoImage(
                 Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
@@ -73,4 +75,4 @@ class managerlistFrame(template):
                                           tags=("oddrow"), image=self.image_list[record[0]])
             self.managers_tree.insert(parent=record[0], index=1, text="", values=['Add to favourites'],
                                       tags=("favourite"))
-            self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
+            self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this manager"], tags=("open"))
