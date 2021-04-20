@@ -54,5 +54,7 @@ class AdminForm(template):
         self.form_frame.place(x=500, y=100)
 
     def display_form(self, table_name):
-        # display the form to edit that specific table
+        self.open_a_connection()
+        self.acursor.execute(f'desc {table_name}')
+        print(self.acursor.fetchall())
         pass
