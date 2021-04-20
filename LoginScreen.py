@@ -16,7 +16,6 @@ class loginScreenFrame(template):
             self.locallist.append(user)
         self.close_a_connection()
 
-
     def __init__(self, master):
         self.locallist = []
         super().__init__(master)
@@ -28,7 +27,7 @@ class loginScreenFrame(template):
         self.pic = Label(self.login_frame, image=self.photo)
         self.pic.pack()
         self.frame_login = Frame(self.login_frame, bg="Lemon Chiffon", borderwidth=0)
-        self.frame_login.place(x=525, y=300, width=550, height=315)
+        self.frame_login.place(x=525, y=250, width=550, height=315)
         Label(self.frame_login, text="Login Screen", font=("Verdana", 16, "bold"), bg="Lemon Chiffon").place(x=200,
                                                                                                              y=20)
         Label(self.frame_login, text="Username", font=("Goudy old style", 13), bg="Lemon Chiffon").place(x=100, y=75)
@@ -51,6 +50,10 @@ class loginScreenFrame(template):
               bg="Lemon Chiffon").place(x=225,
                                         y=280)
         self.login_frame.place(x=0, y=0, relwidth=1, relheight=1)
+
+        self.admin_button = Button(self.baseFrame, text="Admin's portal", font=("Microsoft YaHei UI", 14, "bold"),
+                                   bg="Lemon Chiffon")
+        self.admin_button.place(x=730, y=650)
 
     def validate(self):
         self.refresh_db()

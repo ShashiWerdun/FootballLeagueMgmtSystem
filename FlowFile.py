@@ -6,6 +6,7 @@ from tkinter import messagebox
 import cx_Oracle
 from PIL import Image, ImageTk
 
+from AdminForm import AdminForm
 from FavouritesScreen import favouritesScreenframe
 from HomePage import HomeScreenFrameGen
 from LoginScreen import loginScreenFrame
@@ -173,6 +174,9 @@ def startup():
     login_screen.loginbutton.config(command=lambda: validationfunc(login_screen, home_screen))
     login_screen.anonylogin.config(command=lambda: change_screens(login_screen, home_screen))
     login_screen.registerbutton.config(command=lambda: change_screens(login_screen, registration_screen))
+    login_screen.admin_button.config(command=lambda: change_screens(login_screen, admin_portal_screen))
+
+    admin_portal_screen.verify_button.config(command=lambda: admin_portal_screen.admin_verify())
 
     registration_screen.loginredirect.config(command=lambda: change_screens(registration_screen, None))
     registration_screen.btn_register.config(command=lambda: validationfunc(registration_screen, login_screen))
@@ -256,6 +260,7 @@ sponsor_list_screen = sponsorlistFrame(root)
 team_list_screen = teamlistFrame(root)
 team_stat_screen = TeamStatsScreen(root)
 favourites_screen = favouritesScreenframe(root)
+admin_portal_screen = AdminForm(root)
 
 root.state("zoomed")
 root.overrideredirect(True)
