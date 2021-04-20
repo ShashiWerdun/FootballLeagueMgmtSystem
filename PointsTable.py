@@ -32,7 +32,7 @@ class pointsTableFrame(template):
             wins = (self.acursor.fetchone())[0]
             team_row.append(wins)
             self.acursor.execute(
-                f"select count(*) from match m, match_team mt where winner is NULL and m.mid = mt.mid and mt.tname='{team}'")
+                f"select count(*) from match m, match_team mt where (m.winner is NULL and m.tot_goals is NOT NULL) and m.mid = mt.mid and mt.tname='{team}'")
             draws = (self.acursor.fetchone())[0]
             team_row.append(draws)
             self.acursor.execute(
