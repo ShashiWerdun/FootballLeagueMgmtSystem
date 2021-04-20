@@ -90,8 +90,8 @@ class HomeScreenFrameGen(template):
         for option in self.fixtures_list:
             teamA = str(option[3]).lower()
             teamB = str(option[4]).lower()
-            self.logo1 = Image.open(f"Images\{teamA}.jpeg").resize((100, 100), Image.ANTIALIAS)
-            self.logo2 = Image.open(f"Images\{teamB}.jpeg").resize((100, 100), Image.ANTIALIAS)
+            self.logo1 = Image.open(f"Images\{teamA}.jpg").resize((100, 100), Image.ANTIALIAS)
+            self.logo2 = Image.open(f"Images\{teamB}.jpg").resize((100, 100), Image.ANTIALIAS)
             self.fiximage = Image.new('RGB', (200, 100), (250, 250, 250))
             self.fiximage.paste(self.logo1, (0, 0))
             self.fiximage.paste(self.logo2, (100, 0))
@@ -99,6 +99,7 @@ class HomeScreenFrameGen(template):
             self.imageslist.append(self.logo2)
             self.imageslist.append(self.fiximage)
             self.tkimage = ImageTk.PhotoImage(self.fiximage)
+            self.imageslist.append(self.tkimage)
             ttk.Button(self.fixture_Frame,
                        text=f"On {str(option[1].date())}, {option[2]}\nat {option[0]}",
                        style="fixstyle.TButton",

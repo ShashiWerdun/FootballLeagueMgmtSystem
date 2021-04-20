@@ -21,7 +21,7 @@ class TeamStatsScreen(template):
             self.close_a_connection()
             self.team = list(self.team[0])
             # display player picture
-            dp_raw = Image.open(f'Images\{self.team[1].lower()}.jpeg')
+            dp_raw = Image.open(f'Images\{self.team[1].lower()}.jpg')
             dp_raw = dp_raw.resize((400, 400), Image.ANTIALIAS)
             self.dp = ImageTk.PhotoImage(dp_raw)
             pic = Label(self.baseFrame, image=self.dp)

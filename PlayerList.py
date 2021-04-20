@@ -63,7 +63,7 @@ class playerlistFrame(template):
             record[1] = list(record[1])
             record[1][2] = record[1][2].date()
             self.image_list.append(ImageTk.PhotoImage(
-                Image.open(f"Images/{str(record[1][0]).lower()}.png").resize((60, 60), Image.ANTIALIAS)))
+                Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
             if record[0] % 2 == 0:
                 self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                          tags=("evenrow"), image=self.image_list[record[0]])

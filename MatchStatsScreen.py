@@ -29,7 +29,7 @@ class MatchStatsScreen(template):
                 self.total_goals = self.team_goals[0][1] + self.team_goals[1][1]
 
             # display stadium picture
-            stadium_pic_raw = Image.open('Images\SplashScreen.jpeg')
+            stadium_pic_raw = Image.open('Images\SplashScreen.jpg')
             stadium_pic_raw = stadium_pic_raw.resize((self.screenwidth // 4, self.screenheight // 4), Image.ANTIALIAS)
             self.stadium_pic = ImageTk.PhotoImage(stadium_pic_raw)
             Label(self.MatchStatFrame, image=self.stadium_pic).grid(rowspan=4, columnspan=2, column=2, row=2)

@@ -21,7 +21,7 @@ class ManagerStatsScreen(template):
             self.close_a_connection()
             self.player = list(self.player[0])
             # display player picture
-            dp_raw = Image.open(f'Images\{self.player[0].lower()}.png')
+            dp_raw = Image.open(f'Images\{self.player[0].lower()}.jpg')
             dp_raw = dp_raw.resize((400, 400), Image.ANTIALIAS)
             self.dp = ImageTk.PhotoImage(dp_raw)
             pic = Label(self.baseFrame, image=self.dp)

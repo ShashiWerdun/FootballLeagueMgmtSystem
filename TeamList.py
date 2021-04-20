@@ -57,7 +57,7 @@ class teamlistFrame(template):
             record = list(record)
             record[1] = list(record[1])
             self.image_list.append(ImageTk.PhotoImage(
-                Image.open(f"Images/{str(record[1][0]).lower()}.jpeg").resize((60, 60), Image.ANTIALIAS)))
+                Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
             if record[0] % 2 == 0:
                 self.teams_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
                                        tags=("evenrow"), image=self.image_list[record[0]])

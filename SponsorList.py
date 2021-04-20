@@ -25,7 +25,7 @@ class sponsorlistFrame(template):
         self.treestyle = ttk.Style()
         self.treestyle.theme_use("clam")
         self.treestyle.configure("sponlist.Treeview", background="White", foreground="White", rowheight=65,
-                                 font=("@Microsoft YaHei", 12),
+                                 font=("@Microsoft YaHei", 15),
                                  fieldbackground="White")
         self.treestyle.map('sponlist.Treeview', background=[('selected', 'coral4')])
         self.treestyle.configure("sponlist.Treeview.Heading", font=("Malgun Gothic", 15, "bold"))
