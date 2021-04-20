@@ -11,8 +11,6 @@ class favouritesScreenframe(template):
     def __init__(self, master, uid=None):
         if uid is not None:
             super().__init__(master)
-            # start database connection
-            self.open_a_connection()
 
             # donot use this frame for inserting any widget. You should use another variable called usable_frame
             self.main_canvas = Canvas(self.baseFrame)
@@ -39,12 +37,6 @@ class favouritesScreenframe(template):
             # favourite teams label
             Label(self.usable_frame,
                   text="Your favourite Teams", font=self.header_font, borderwidth=0).pack()
-            # database connection
-            self.fav_team_list = []
-            self.acursor.execute(
-                f"select tname, ceo, homeground from team where tname in (select tname from fav_team where fid = {uid})")
-            self.fav_team_list = [team for team in self.acursor]
-
             # treeview
             self.fav_team_frame = Frame(self.usable_frame)
             self.fav_team_frame.pack()
@@ -70,31 +62,11 @@ class favouritesScreenframe(template):
             self.teams_tree.tag_configure("evenrow", background="gold2")
             self.teams_tree.tag_configure("open", background="pink")
             self.teams_tree.tag_configure("favourite", background="red")
-            self.fav_teams_image_list = []
-            for record in enumerate(self.fav_team_list):
-                record = list(record)
-                record[1] = list(record[1])
-                self.fav_teams_image_list.append(ImageTk.PhotoImage(
-                    Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
-                if record[0] % 2 == 0:
-                    self.teams_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
-                                           tags=("evenrow"), image=self.fav_teams_image_list[record[0]])
-                else:
-                    self.teams_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
-                                           tags=("oddrow"), image=self.fav_teams_image_list[record[0]])
-                self.teams_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
-                                       tags=("favourite"))
-                self.teams_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
 
             # FAVOURITE PLAYERS
             # favourite players label
             Label(self.usable_frame,
                   text="Your favourite Players", font=self.header_font, borderwidth=0).pack()
-            # database connection
-            self.fav_players_list = []
-            self.acursor.execute(
-                f"select name, rank, DOB, nation, team, MPPOS from participant pa, player p where p.pid = pa.pid and p.pid in (select pid from fav_participant where fid = {uid})")
-            self.fav_players_list = [player for player in self.acursor]
             # treeview
             self.fav_players_frame = Frame(self.usable_frame)
             self.fav_players_frame.pack()
@@ -127,32 +99,11 @@ class favouritesScreenframe(template):
             self.players_tree.tag_configure("evenrow", background="gold2")
             self.players_tree.tag_configure("open", background="pink")
             self.players_tree.tag_configure("favourite", background="red")
-            self.fav_players_image_list = []
-            for record in enumerate(self.fav_players_list):
-                record = list(record)
-                record[1] = list(record[1])
-                record[1][2] = record[1][2].date()
-                self.fav_players_image_list.append(ImageTk.PhotoImage(
-                    Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
-                if record[0] % 2 == 0:
-                    self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
-                                             tags=("evenrow"), image=self.fav_players_image_list[record[0]])
-                else:
-                    self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
-                                             tags=("oddrow"), image=self.fav_players_image_list[record[0]])
-                self.players_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
-                                         tags=("favourite"))
-                self.players_tree.insert(parent=record[0], index=0, text="", values=["Open this player"], tags=("open"))
 
             # FAVOURITE MANAGERS
             # favourite managers label
             Label(self.usable_frame,
                   text="Your favourite Managers", font=self.header_font, borderwidth=0).pack()
-            # database connection
-            self.fav_managers_list = []
-            self.acursor.execute(
-                f"select p.name, p.nation,p.DOB, p.team, m.hiredate, m.joindate from manager m, participant p where m.mid = p.pid and m.mid in (select pid from fav_team where fid = {uid})")
-            self.fav_managers_list = [manager for manager in self.acursor]
             # treeview
             self.fav_managers_frame = Frame(self.usable_frame)
             self.fav_managers_frame.pack()
@@ -186,22 +137,92 @@ class favouritesScreenframe(template):
             self.managers_tree.tag_configure("evenrow", background="gold2")
             self.managers_tree.tag_configure("open", background="pink")
             self.managers_tree.tag_configure("favourite", background="red")
-            self.fav_managers_image_list = []
-            for record in enumerate(self.fav_managers_list):
-                record = list(record)
-                record[1] = list(record[1])
-                record[1][2] = record[1][2].date()
-                self.fav_managers_image_list.append(ImageTk.PhotoImage(
-                    Image.open(f"Images/{str(record[1][0]).lower()}.jpg").resize((60, 60), Image.ANTIALIAS)))
-                if record[0] % 2 == 0:
-                    self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
-                                              tags=("evenrow"), image=self.fav_managers_image_list[record[0]])
-                else:
-                    self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
-                                              tags=("oddrow"), image=self.fav_managers_image_list[record[0]])
-                self.managers_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
-                                          tags=("favourite"))
-                self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
 
-            # close database connection
-            self.close_a_connection()
+            # get data and display
+            self.refresh_data(uid)
+            self.refresh_display()
+
+    def refresh_data(self, uid):
+        # start database connection
+        self.open_a_connection()
+
+        # data for favourite teams list
+        self.fav_team_list = []
+        self.acursor.execute(
+            f"select tname, ceo, homeground from team where tname in (select tname from fav_team where fid = {uid})")
+        self.fav_team_list = [team for team in self.acursor]
+
+        # data for favourite managers list
+        self.fav_managers_list = []
+        self.acursor.execute(
+            f"select p.name, p.nation,p.DOB, p.team, m.hiredate, m.joindate from manager m, participant p where m.mid = p.pid and m.mid in (select pid from fav_team where fid = {uid})")
+        self.fav_managers_list = [manager for manager in self.acursor]
+
+        # data for favourite players list
+        self.fav_players_list = []
+        self.acursor.execute(
+            f"select name, rank, DOB, nation, team, MPPOS from participant pa, player p where p.pid = pa.pid and p.pid in (select pid from fav_participant where fid = {uid})")
+        self.fav_players_list = [player for player in self.acursor]
+
+        # close database connection
+        self.close_a_connection()
+
+    def refresh_display(self):
+
+        # clear all trees
+        self.managers_tree.delete(*self.managers_tree.get_children())
+        self.players_tree.delete(*self.players_tree.get_children())
+        self.teams_tree.delete(*self.teams_tree.get_children())
+
+        # display favourite managers list
+        self.fav_managers_image_list = []
+        for record in enumerate(self.fav_managers_list):
+            record = list(record)
+            record[1] = list(record[1])
+            record[1][2] = record[1][2].date()
+            self.fav_managers_image_list.append(ImageTk.PhotoImage(
+                Image.open(f"Images/{str(record[1][0]).lower()}.png").resize((60, 60), Image.ANTIALIAS)))
+            if record[0] % 2 == 0:
+                self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                          tags=("evenrow"), image=self.fav_managers_image_list[record[0]])
+            else:
+                self.managers_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                          tags=("oddrow"), image=self.fav_managers_image_list[record[0]])
+            self.managers_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
+                                      tags=("favourite"))
+            self.managers_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))
+
+        # display favourite players list
+        self.fav_players_image_list = []
+        for record in enumerate(self.fav_players_list):
+            record = list(record)
+            record[1] = list(record[1])
+            record[1][2] = record[1][2].date()
+            self.fav_players_image_list.append(ImageTk.PhotoImage(
+                Image.open(f"Images/{str(record[1][0]).lower()}.png").resize((60, 60), Image.ANTIALIAS)))
+            if record[0] % 2 == 0:
+                self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                         tags=("evenrow"), image=self.fav_players_image_list[record[0]])
+            else:
+                self.players_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                         tags=("oddrow"), image=self.fav_players_image_list[record[0]])
+            self.players_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
+                                     tags=("favourite"))
+            self.players_tree.insert(parent=record[0], index=0, text="", values=["Open this player"], tags=("open"))
+
+        # display favourite teams list
+        self.fav_teams_image_list = []
+        for record in enumerate(self.fav_team_list):
+            record = list(record)
+            record[1] = list(record[1])
+            self.fav_teams_image_list.append(ImageTk.PhotoImage(
+                Image.open(f"Images/{str(record[1][0]).lower()}.jpeg").resize((60, 60), Image.ANTIALIAS)))
+            if record[0] % 2 == 0:
+                self.teams_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                       tags=("evenrow"), image=self.fav_teams_image_list[record[0]])
+            else:
+                self.teams_tree.insert(parent="", index=END, iid=record[0], text="", values=record[1],
+                                       tags=("oddrow"), image=self.fav_teams_image_list[record[0]])
+            self.teams_tree.insert(parent=record[0], index=1, text="", values=['Remove from favourites'],
+                                   tags=("favourite"))
+            self.teams_tree.insert(parent=record[0], index=0, text="", values=["Open this team"], tags=("open"))

@@ -60,8 +60,13 @@ def add_to_fav(treeobject, table_name):
             connection.cursor().execute(f"insert into fav_{table_name} values({userID}, {primkey})")
             messagebox.showinfo('Added to favourites',
                                 f'This {table_name} has been successfully added to your favourites list!')
-        except cx_Oracle.IntegrityError:
-            messagebox.showerror('Error adding to favourites', 'This item is already present in your favourites list!')
+        except cx_Oracle.IntegrityError as e:
+            error_msg = str()
+            if 'PROJECT.FAV_TEAM_FK_FID' in str(e):
+                error_msg = 'You must be logged in to maintain favourites!'
+            else:
+                error_msg = 'This item is already present in your favourites list!'
+            messagebox.showerror('Error adding to favourites', error_msg)
         connection.commit()
         connection.close()
 
@@ -84,14 +89,13 @@ def remove_from_fav(treeobject, table_name):
             connection.cursor().execute(
                 f"delete from fav_{table_name} where fid={userID} and {key[table_name]}={primkey}")
             connection.commit()
+            connection.close()
             messagebox.showinfo('Remove from favourites',
                                 f'This {table_name} has been successfully removed from your favourites list!')
-            favourites_screen.back_button.invoke()
-            profile_screen.back_button.invoke()
-            home_screen.profilebutton.invoke()
+            favourites_screen.refresh_data(userID)
+            favourites_screen.refresh_display()
         except cx_Oracle.IntegrityError:
             messagebox.showerror('Error removing from favourites', 'This item is not present in your favourites list!')
-        connection.close()
 
 
 def profile_button_click(startscreen, endscreen):
